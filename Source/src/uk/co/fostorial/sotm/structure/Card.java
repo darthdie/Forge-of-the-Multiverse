@@ -1,138 +1,135 @@
 package uk.co.fostorial.sotm.structure;
 
 public class Card {
-	
-	final static int HERO_FRONT = 0;
-	final static int HERO_BACK = 1;
-	final static int HERO_CARD = 2;
-	final static int VILLAIN_FRONT = 3;
-	final static int VILLAIN_BACK = 4;
-	final static int VILLAIN_CARD = 5;
-	final static int ENVIRONMENT_CARD = 6;
-	final static int CARD_BACK = 7;
-	
-	private String name;
-	private int cardType;
-	private String classes;
-	private String healthPoints;
-	private Integer numberInDeck;
-	private Integer cardID;
-	private String portraitFile;
+    final static int HERO_FRONT = 0;
+    final static int HERO_BACK = 1;
+    final static int HERO_CARD = 2;
+    final static int VILLAIN_FRONT = 3;
+    final static int VILLAIN_BACK = 4;
+    final static int VILLAIN_CARD = 5;
+    final static int ENVIRONMENT_CARD = 6;
+    final static int CARD_BACK = 7;
 
-	public Card(int cardType, Integer cardID) {
-		this.cardType = cardType;
-		this.cardID = cardID;
-	}
+    private String name;
+    private int cardType;
+    private String classes;
+    private String healthPoints;
+    private Integer numberInDeck;
+    private Integer cardID;
+    private String portraitFile;
 
-	public String getName() {
-		return name;
-	}
+    public Card(int cardType, Integer cardID) {
+        this.cardType = cardType;
+        this.cardID = cardID;
+        this.numberInDeck = 0;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public int getCardType() {
-		return cardType;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setCardType(int cardType) {
-		this.cardType = cardType;
-	}
+    public int getCardType() {
+        return cardType;
+    }
 
-	public String getCardTypeString()
-	{
-		String ret = "";
-		
-		switch (cardType)
-		{
-		case HERO_FRONT:
-			ret = "Hero Front"; break;
-		case HERO_BACK:
-			ret = "Hero Back"; break;
-		case HERO_CARD:
-			ret = "Hero Card"; break;
-		case VILLAIN_FRONT:
-			ret = "Villain Character"; break;
-		case VILLAIN_BACK:
-			ret = "Villain Character"; break;
-		case VILLAIN_CARD:
-			ret = "Villain Card"; break;
-		case ENVIRONMENT_CARD:
-			ret = "Environment Card"; break;
-		case CARD_BACK:
-			ret = "Card Back"; break;
-		}
-		
-		return ret;
-	}
+    public void setCardType(int cardType) {
+        this.cardType = cardType;
+    }
 
-	public String getClasses() {
-		return classes;
-	}
+    public String getCardTypeString() {
+        String ret = "";
 
-	public void setClasses(String classes) {
-		this.classes = classes;
-	}
+        switch (cardType) {
+            case HERO_FRONT:
+                ret = "Hero Front";
+                break;
+            case HERO_BACK:
+                ret = "Hero Back";
+                break;
+            case HERO_CARD:
+                ret = "Hero Card";
+                break;
+            case VILLAIN_FRONT:
+                ret = "Villain Character";
+                break;
+            case VILLAIN_BACK:
+                ret = "Villain Character";
+                break;
+            case VILLAIN_CARD:
+                ret = "Villain Card";
+                break;
+            case ENVIRONMENT_CARD:
+                ret = "Environment Card";
+                break;
+            case CARD_BACK:
+                ret = "Card Back";
+                break;
+        }
 
-	public String getHealthPoints() {
-		return healthPoints;
-	}
-	
-	public int getHealthPointsInt() {
-		if (healthPoints != null)
-		{
-			try
-			{
-				Integer i = new Integer(healthPoints);
-				return i.intValue();
-			}
-			catch(Exception e)
-			{
-				return 0;
-			}
-		}
-		return 0;
-	}
+        return ret;
+    }
 
-	public void setHealthPoints(String healthPoints) {
-		this.healthPoints = healthPoints;
-	}
+    public String getClasses() {
+        return classes;
+    }
 
-	public Integer getNumberInDeck() {
-		if (numberInDeck == null)
-		{
-			numberInDeck = new Integer(0);
-		}
-		return numberInDeck;
-	}
+    public void setClasses(String classes) {
+        this.classes = classes;
+    }
 
-	public void setNumberInDeck(Integer numberInDeck) {
-		this.numberInDeck = numberInDeck;
-	}
+    public String getHealthPoints() {
+        return healthPoints;
+    }
 
-	public Integer getCardID() {
-		return cardID;
-	}
+    public int getHealthPointsInt() {
+        if (healthPoints != null) {
+            try {
+                Integer i = new Integer(healthPoints);
+                return i;
+            } catch (NumberFormatException e) {
+                return 0;
+            }
+        }
+        
+        return 0;
+    }
 
-	public void setCardID(Integer cardID) {
-		this.cardID = cardID;
-	}
-	
-	public String getXML()
-	{
-		String xml = "";
-		xml += " <card>";
-		xml += " </card>\n";
-		return xml;
-	}
+    public void setHealthPoints(String healthPoints) {
+        this.healthPoints = healthPoints;
+    }
 
-	public String getPortraitFile() {
-		return portraitFile;
-	}
+    public Integer getNumberInDeck() {
+        return numberInDeck;
+    }
 
-	public void setPortraitFile(String portraitFile) {
-		this.portraitFile = portraitFile;
-	}
+    public void setNumberInDeck(Integer numberInDeck) {
+        this.numberInDeck = numberInDeck;
+    }
 
+    public Integer getCardID() {
+        return cardID;
+    }
+
+    public void setCardID(Integer cardID) {
+        this.cardID = cardID;
+    }
+
+    public String getXML() {
+        String xml = "";
+        xml += " <card>";
+        xml += " </card>\n";
+        return xml;
+    }
+
+    public String getPortraitFile() {
+        return portraitFile;
+    }
+
+    public void setPortraitFile(String portraitFile) {
+        this.portraitFile = portraitFile;
+    }
 }
