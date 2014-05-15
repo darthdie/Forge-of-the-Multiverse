@@ -40,7 +40,6 @@ import uk.co.fostorial.sotm.structure.VillainDeck;
 import uk.co.fostorial.sotm.structure.VillainFrontCard;
 
 public final class DeckManager extends JSplitPane implements ListSelectionListener {
-
     private static final long serialVersionUID = 7972443091809248703L;
 
     public final static int VILLAIN_MODE = 0;
@@ -146,7 +145,12 @@ public final class DeckManager extends JSplitPane implements ListSelectionListen
 
     @Override
     public void valueChanged(ListSelectionEvent e) {
-        Integer id = (Integer) cardTable.getValueAt(cardTable.getSelectedRow(), ((DeckManagerTableModel) cardTable.getModel()).ID);
+        int selectedRow = cardTable.getSelectedRow();
+        if(selectedRow == -1) {
+            return;
+        }
+
+        Integer id = (Integer) cardTable.getValueAt(selectedRow, ((DeckManagerTableModel) cardTable.getModel()).ID);
 
         for (Card card : deck.getCards()) {
             if (card.getCardID().equals(id)) {
