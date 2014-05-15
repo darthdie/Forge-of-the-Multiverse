@@ -93,7 +93,6 @@ public final class DeckManager extends JSplitPane implements ListSelectionListen
         deckStatTable = new JTable(new DeckStatisticsTableModel(deck));
         deckStatTable.setFillsViewportHeight(true);
         deckStatTable.setEnabled(false);
-        //cardTable.setAutoCreateRowSorter(true);
         deckStatTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         deckStatScroll.setViewportView(deckStatTable);
         horizontalSplit.setBottomComponent(deckStatScroll);
@@ -103,8 +102,8 @@ public final class DeckManager extends JSplitPane implements ListSelectionListen
         cardTableScroll = new JScrollPane();
         cardTableScroll.setAutoscrolls(true);
         cardTable = new JTable(new DeckManagerTableModel(deck));
+        cardTable.setAutoCreateRowSorter(true);
         cardTable.setFillsViewportHeight(true);
-        //cardTable.setAutoCreateRowSorter(true);
         cardTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         cardTable.getSelectionModel().addListSelectionListener(this);
         cardTableScroll.setViewportView(cardTable);
@@ -113,7 +112,6 @@ public final class DeckManager extends JSplitPane implements ListSelectionListen
         this.setLeftComponent(cardTableScroll);
 
         this.setDividerLocation(frame.getTabbedPane().getWidth() - 250);
-
     }
 
     public void newDeck() {
