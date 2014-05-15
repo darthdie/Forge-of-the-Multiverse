@@ -119,16 +119,13 @@ public final class DeckManager extends JSplitPane implements ListSelectionListen
     public void newDeck() {
         switch (deckMode) {
             case DeckManager.VILLAIN_MODE:
-                deck = new VillainDeck();
-                deck.setName("New Villain Deck");
+                deck = new VillainDeck("New Villain Deck");
                 break;
             case DeckManager.ENVIRONMENT_MODE:
-                deck = new EnvironmentDeck();
-                deck.setName("New Environment Deck");
+                deck = new EnvironmentDeck("New Environment Deck");
                 break;
             case DeckManager.HERO_MODE:
-                deck = new HeroDeck();
-                deck.setName("New Hero Deck");
+                deck = new HeroDeck("New Hero Deck");
                 break;
         }
     }

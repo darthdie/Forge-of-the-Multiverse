@@ -36,6 +36,7 @@ import uk.co.fostorial.sotm.design.CreatorTabVillainFront;
 import uk.co.fostorial.sotm.structure.BackCard;
 import uk.co.fostorial.sotm.structure.Card;
 import uk.co.fostorial.sotm.structure.Deck;
+import uk.co.fostorial.sotm.structure.DeckDocument;
 import uk.co.fostorial.sotm.structure.EnvironmentCard;
 import uk.co.fostorial.sotm.structure.EnvironmentDeck;
 import uk.co.fostorial.sotm.structure.HeroBackCard;
@@ -144,7 +145,7 @@ public class CreatorFrame extends JFrame implements ChangeListener {
                     break;
                 }
 
-                Deck deck = Deck.loadFromFile(path);
+                Deck deck = DeckDocument.create(path).parse();
                 if (deck == null) {
                     break;
                 }
