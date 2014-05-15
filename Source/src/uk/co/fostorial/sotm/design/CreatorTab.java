@@ -1,10 +1,9 @@
 package uk.co.fostorial.sotm.design;
 
-import java.awt.BorderLayout;
 import java.awt.Component;
-import java.awt.ComponentOrientation;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -12,14 +11,12 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.CellRendererPane;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
-import javax.swing.ScrollPaneLayout;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import uk.co.fostorial.sotm.CreatorFrame;
@@ -66,6 +63,7 @@ public class CreatorTab extends JSplitPane {
         propertiesScroll.setViewportView(properties);
         this.setRightComponent(propertiesScroll);
     }
+   
 
     public void saveToJPG() {
         try {

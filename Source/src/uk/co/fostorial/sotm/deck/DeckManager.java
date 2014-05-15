@@ -63,6 +63,54 @@ public final class DeckManager extends JSplitPane implements ListSelectionListen
 
     private CreatorTab creator;
 
+    public String getDeckName() {
+        return deckName;
+    }
+
+    public void setDeckName(String deckName) {
+        this.deckName = deckName;
+    }
+
+    public CreatorTab getCreator() {
+        return creator;
+    }
+
+    public void setCreator(CreatorTab creator) {
+        this.creator = creator;
+    }
+    
+    public Deck getDeck() {
+        return deck;
+    }
+
+    public void setDeck(Deck deck) {
+        this.deck = deck;
+    }
+
+    public int getDeckMode() {
+        return deckMode;
+    }
+
+    public void setDeckMode(int deckMode) {
+        this.deckMode = deckMode;
+    }
+    
+    public JScrollPane getDeckStatScroll() {
+        return deckStatScroll;
+    }
+
+    public void setDeckStatScroll(JScrollPane deckStatScroll) {
+        this.deckStatScroll = deckStatScroll;
+    }
+
+    public JTable getDeckStatTable() {
+        return deckStatTable;
+    }
+
+    public void setDeckStatTable(JTable deckStatTable) {
+        this.deckStatTable = deckStatTable;
+    }
+    
     public DeckManager(int deckMode, Deck deck, CreatorFrame frame) {
         this.setDeckMode(deckMode);
         this.deck = deck;
@@ -112,7 +160,7 @@ public final class DeckManager extends JSplitPane implements ListSelectionListen
 
         this.setDividerLocation(frame.getTabbedPane().getWidth() - 250);
     }
-
+   
     public void newDeck() {
         switch (deckMode) {
             case DeckManager.VILLAIN_MODE:
@@ -125,22 +173,6 @@ public final class DeckManager extends JSplitPane implements ListSelectionListen
                 deck = new HeroDeck("New Hero Deck");
                 break;
         }
-    }
-
-    public Deck getDeck() {
-        return deck;
-    }
-
-    public void setDeck(Deck deck) {
-        this.deck = deck;
-    }
-
-    public int getDeckMode() {
-        return deckMode;
-    }
-
-    public void setDeckMode(int deckMode) {
-        this.deckMode = deckMode;
     }
 
     @Override
@@ -239,9 +271,7 @@ public final class DeckManager extends JSplitPane implements ListSelectionListen
 
     public void increaseNumberInDeck() {
         if (selectedCard != null && (selectedCard instanceof HeroCard || selectedCard instanceof VillainCard || selectedCard instanceof EnvironmentCard)) {
-            int number = selectedCard.getNumberInDeck();
-            number++;
-            selectedCard.setNumberInDeck(number);
+            selectedCard.setNumberInDeck(selectedCard.getNumberInDeck() + 1);
             cardTable.repaint();
             deckStatTable.repaint();
         } else {
@@ -318,22 +348,6 @@ public final class DeckManager extends JSplitPane implements ListSelectionListen
         }
     }
 
-    public String getDeckName() {
-        return deckName;
-    }
-
-    public void setDeckName(String deckName) {
-        this.deckName = deckName;
-    }
-
-    public CreatorTab getCreator() {
-        return creator;
-    }
-
-    public void setCreator(CreatorTab creator) {
-        this.creator = creator;
-    }
-
     public void exportDeckIndividuallyPNG() {
         exportDeckIndividually("png");
     }
@@ -394,59 +408,5 @@ public final class DeckManager extends JSplitPane implements ListSelectionListen
         }
 
         chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-    }
-
-    public JScrollPane getDeckStatScroll() {
-        return deckStatScroll;
-    }
-
-    public void setDeckStatScroll(JScrollPane deckStatScroll) {
-        this.deckStatScroll = deckStatScroll;
-    }
-
-    public JTable getDeckStatTable() {
-        return deckStatTable;
-    }
-
-    public void setDeckStatTable(JTable deckStatTable) {
-        this.deckStatTable = deckStatTable;
-    }
-    
-    public class DeckMouseAdapter extends MouseAdapter {
-        private final CreatorFrame frame;
-
-        public DeckMouseAdapter(CreatorFrame frame) {
-            this.frame = frame;
-        }
-
-        @Override
-        public void mousePressed(MouseEvent e) {
-            if (e.isPopupTrigger()) {
-                doPop(e);
-            } else if (e.getClickCount() == 2) {
-                JTable table =(JTable) e.getSource();
-                Point p = e.getPoint();
-                int row = table.rowAtPoint(p);
-                if(row == -1) {
-                    return;
-                }
-        
-                if (frame.getTabbedPane().getSelectedComponent() instanceof DeckManager) {
-                    DeckManager manager = (DeckManager)frame.getTabbedPane().getSelectedComponent();
-                    manager.editCard();
-                }
-            }
-        }
-
-        @Override
-        public void mouseReleased(MouseEvent e) {
-            if (e.isPopupTrigger()) {
-                doPop(e);
-            }
-        }
-
-        private void doPop(MouseEvent e) {
-            frame.getCreatorMenuBar().getCardMenu().show(e.getComponent(), e.getX(), e.getY());
-        }
     }
 }
