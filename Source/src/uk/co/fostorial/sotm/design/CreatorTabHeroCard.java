@@ -50,9 +50,16 @@ public class CreatorTabHeroCard extends CreatorTab implements ActionListener {
     private JButton nameBGColour;
     private String portraitPath;
     private JButton portraitButton;
+    
     private JButton hpImageButton;
     private String hpImagePath;
     private JCheckBox hpCheckBox;
+    
+    private JLabel biImage;
+    private JButton biImageButton;
+    private String biImagePath;
+    private JCheckBox biCheckBox;
+    
     private JTextArea txtCardText;
     private JButton updateButton;
     private JButton saveButton;
@@ -84,6 +91,8 @@ public class CreatorTabHeroCard extends CreatorTab implements ActionListener {
             hpImage.setVisible(false);
             healthPoints.setVisible(false);
         }
+        
+        biCheckBox.setSelected(c.isBonusIconVisible());
 
         portraitPath = c.getPortraitFile();
         hpImagePath = c.getHealthPointsImage();
@@ -227,9 +236,19 @@ public class CreatorTabHeroCard extends CreatorTab implements ActionListener {
         descriptionFontColorButton.setBounds(5, descriptionFontButton.getBounds().y + descriptionFontButton.getBounds().height + 10, 250, 25);
         descriptionFontColorButton.addActionListener(this);
         getProperties().add(descriptionFontColorButton);
+        
+        biImageButton = new JButton("Set Bonus Icon Image");
+        biImageButton.setBounds(5, descriptionFontColorButton.getBounds().y + descriptionFontColorButton.getBounds().height + 10, 250, 25);
+        biImageButton.addActionListener(this);
+        getProperties().add(biImageButton);
 
+        biCheckBox = new JCheckBox("Show/Hide Bonus Icon");
+        biCheckBox.setBounds(5, biImageButton.getBounds().y + biImageButton.getBounds().height + 10, 250, 25);
+        biCheckBox.addActionListener(this);
+        getProperties().add(biCheckBox);
+        
         updateButton = new JButton("Update Card");
-        updateButton.setBounds(5, descriptionFontColorButton.getBounds().y + descriptionFontColorButton.getBounds().height + 10, 250, 25);
+        updateButton.setBounds(5, biCheckBox.getBounds().y + biCheckBox.getBounds().height + 10, 250, 25);
         updateButton.addActionListener(this);
         getProperties().add(updateButton);
 
@@ -319,7 +338,14 @@ public class CreatorTabHeroCard extends CreatorTab implements ActionListener {
         hpImage.setBounds(706 - 135, 47, 135, 135);
         hpImage.setVisible(false);
         getImagePane().add(hpImage);
-        img = null;
+        System.gc();
+        
+        img = new ImageIcon(heroCard.getBonusIconImage());
+        img = new ImageIcon(getScaledImage(img.getImage(), 120, 120));
+        biImage = new JLabel(img);
+        biImage.setBounds(695 - 120, 930 - 120, img.getIconWidth(), img.getIconHeight());
+        biImage.setVisible(false);
+        getImagePane().add(biImage);
         System.gc();
 
         classUnderlay = new JLabel();
@@ -398,6 +424,19 @@ public class CreatorTabHeroCard extends CreatorTab implements ActionListener {
                 hpImage.setIcon(ii);
             }
         }
+        
+        if (e.getSource().equals(biImageButton)) {
+            JFileChooser chooser = getFrame().getChooser();
+            int outcome = chooser.showOpenDialog(this);
+
+            if (outcome == JFileChooser.APPROVE_OPTION) {
+                biImagePath = chooser.getSelectedFile().getAbsolutePath();
+                ImageIcon ii = new ImageIcon(chooser.getSelectedFile().getAbsolutePath());
+                Image image = getScaledImage(ii.getImage(), 135, 135);
+                ii = new ImageIcon(image);
+                biImage.setIcon(ii);
+            }
+        }
 
         if (e.getSource().equals(hpCheckBox)) {
             if (hpCheckBox.isSelected()) {
@@ -406,6 +445,16 @@ public class CreatorTabHeroCard extends CreatorTab implements ActionListener {
             } else {
                 hpImage.setVisible(false);
                 healthPoints.setVisible(false);
+            }
+        }
+        
+        if (e.getSource().equals(biCheckBox)) {
+            if (biCheckBox.isSelected()) {
+                biImage.setVisible(true);
+                //healthPoints.setVisible(true);
+            } else {
+                biImage.setVisible(false);
+                //healthPoints.setVisible(false);
             }
         }
 
@@ -523,8 +572,13 @@ public class CreatorTabHeroCard extends CreatorTab implements ActionListener {
         heroCard.setPortraitFile(portraitPath);
         heroCard.setClasses(txtCardClass.getText());
         heroCard.setCardText(txtCardText.getText());
+        
         heroCard.setHealthPointsImage(hpImagePath);
         heroCard.setHealthPointsVisible(hpCheckBox.isSelected());
+        
+        heroCard.setBonusIconImage(biImagePath);
+        heroCard.setBonusIconVisible(biCheckBox.isSelected());
+        
         heroCard.setClassColor(classUnderlay.getBackground());
         heroCard.setNameColor(nameUnderlay.getBackground());
         heroCard.setQuoteString1(txtQuote1.getText());
