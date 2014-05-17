@@ -96,6 +96,7 @@ public class CreatorTabHeroCard extends CreatorTab implements ActionListener {
 
         portraitPath = c.getPortraitFile();
         hpImagePath = c.getHealthPointsImage();
+        biImagePath = c.getBonusIconImage();
     }
 
     private void setup() {

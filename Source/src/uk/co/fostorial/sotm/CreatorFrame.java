@@ -1,16 +1,10 @@
 package uk.co.fostorial.sotm;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Font;
 import java.awt.Window;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.File;
-import java.io.IOException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -19,10 +13,6 @@ import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
 import uk.co.fostorial.sotm.deck.DeckManager;
 import uk.co.fostorial.sotm.design.CreatorTab;
@@ -38,13 +28,10 @@ import uk.co.fostorial.sotm.structure.Card;
 import uk.co.fostorial.sotm.structure.Deck;
 import uk.co.fostorial.sotm.structure.DeckDocument;
 import uk.co.fostorial.sotm.structure.EnvironmentCard;
-import uk.co.fostorial.sotm.structure.EnvironmentDeck;
 import uk.co.fostorial.sotm.structure.HeroBackCard;
 import uk.co.fostorial.sotm.structure.HeroCard;
-import uk.co.fostorial.sotm.structure.HeroDeck;
 import uk.co.fostorial.sotm.structure.HeroFrontCard;
 import uk.co.fostorial.sotm.structure.VillainCard;
-import uk.co.fostorial.sotm.structure.VillainDeck;
 import uk.co.fostorial.sotm.structure.VillainFrontCard;
 
 public class CreatorFrame extends JFrame implements ChangeListener {
