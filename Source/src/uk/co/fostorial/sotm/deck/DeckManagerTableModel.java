@@ -87,8 +87,9 @@ public class DeckManagerTableModel implements TableModel {
                 return deck.getCards().get(rowIndex).getHealthPoints();
             case NUMBER_IN_DECK:
                 return deck.getCards().get(rowIndex).getNumberInDeck();
+            default:
+                return "";
         }
-        return "";
     }
 
     @Override

@@ -374,13 +374,12 @@ public class CreatorMenuBar extends JMenuBar implements ActionListener {
             if (frame.getTabbedPane().getSelectedComponent() instanceof DeckManager) {
                 DeckManager manager = (DeckManager) frame.getTabbedPane().getSelectedComponent();
                 
-                JFileChooser chooser = frame.getChooser();
-                int outcome = chooser.showSaveDialog(manager);
-                if (outcome != JFileChooser.APPROVE_OPTION) {
+                String filePath = frame.browseForSavePath(CreatorFrame.BrowserFileType.Text);
+                if(filePath.equals("")) {
                     return;
                 }
 
-                if(new DeckPrinter(frame, manager.getDeck()).exportToText(chooser.getSelectedFile().getAbsolutePath())) {
+                if(new DeckPrinter(frame, manager.getDeck()).exportToText(filePath)) {
                     JOptionPane.showMessageDialog(frame, "Export Complete!");
                 }
             }
@@ -392,20 +391,7 @@ public class CreatorMenuBar extends JMenuBar implements ActionListener {
     }
     
     private String getExportPath() {
-        JFileChooser chooser = frame.getChooser();
-        chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-        chooser.validate();
-        int outcome = chooser.showDialog(frame, "Select");
-
-        String path = "";
-        if (outcome == JFileChooser.APPROVE_OPTION) {
-            path = chooser.getSelectedFile().getAbsolutePath();
-        }
-
-        chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        chooser.validate();
-        
-        return path;
+        return frame.browseForSavePath(CreatorFrame.BrowserFileType.Directory);
     }
 
     public CreatorFrame getFrame() {

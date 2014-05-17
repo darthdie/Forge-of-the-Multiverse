@@ -1,8 +1,5 @@
 package uk.co.fostorial.sotm.deck;
 
-import java.awt.Point;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -40,6 +37,7 @@ import uk.co.fostorial.sotm.structure.VillainDeck;
 import uk.co.fostorial.sotm.structure.VillainFrontCard;
 
 public final class DeckManager extends JSplitPane implements ListSelectionListener {
+
     private static final long serialVersionUID = 7972443091809248703L;
 
     public final static int VILLAIN_MODE = 0;
@@ -78,7 +76,7 @@ public final class DeckManager extends JSplitPane implements ListSelectionListen
     public void setCreator(CreatorTab creator) {
         this.creator = creator;
     }
-    
+
     public Deck getDeck() {
         return deck;
     }
@@ -94,7 +92,7 @@ public final class DeckManager extends JSplitPane implements ListSelectionListen
     public void setDeckMode(int deckMode) {
         this.deckMode = deckMode;
     }
-    
+
     public JScrollPane getDeckStatScroll() {
         return deckStatScroll;
     }
@@ -110,7 +108,7 @@ public final class DeckManager extends JSplitPane implements ListSelectionListen
     public void setDeckStatTable(JTable deckStatTable) {
         this.deckStatTable = deckStatTable;
     }
-    
+
     public DeckManager(int deckMode, Deck deck, CreatorFrame frame) {
         this.setDeckMode(deckMode);
         this.deck = deck;
@@ -160,7 +158,7 @@ public final class DeckManager extends JSplitPane implements ListSelectionListen
 
         this.setDividerLocation(frame.getTabbedPane().getWidth() - 250);
     }
-   
+
     public void newDeck() {
         switch (deckMode) {
             case DeckManager.VILLAIN_MODE:
@@ -178,7 +176,7 @@ public final class DeckManager extends JSplitPane implements ListSelectionListen
     @Override
     public void valueChanged(ListSelectionEvent e) {
         int selectedRow = cardTable.getSelectedRow();
-        if(selectedRow == -1) {
+        if (selectedRow == -1) {
             return;
         }
 
@@ -262,9 +260,9 @@ public final class DeckManager extends JSplitPane implements ListSelectionListen
                 deck.addCard(newCard);
                 break;
         }
-        
+
         selectedCard = newCard;
-        
+
         cardTable.repaint();
         deckStatTable.repaint();
     }
@@ -308,40 +306,34 @@ public final class DeckManager extends JSplitPane implements ListSelectionListen
         if (selectedCard == null) {
             return;
         }
-        
+
         if (selectedCard instanceof HeroFrontCard) {
             frame.newWindow(CreatorFrame.FILE_NEW_HERO_FRONT, selectedCard);
-        }
-        else if (selectedCard instanceof HeroBackCard) {
+        } else if (selectedCard instanceof HeroBackCard) {
             frame.newWindow(CreatorFrame.FILE_NEW_HERO_BACK, selectedCard);
-        }
-        else if (selectedCard instanceof HeroCard) {
+        } else if (selectedCard instanceof HeroCard) {
             frame.newWindow(CreatorFrame.FILE_NEW_HERO_CARD, selectedCard);
-        }
-        else if (selectedCard instanceof BackCard) {
+        } else if (selectedCard instanceof BackCard) {
             frame.newWindow(CreatorFrame.FILE_NEW_CARD_BACK, selectedCard);
-        }
-        else if (selectedCard instanceof VillainFrontCard) {
+        } else if (selectedCard instanceof VillainFrontCard) {
             frame.newWindow(CreatorFrame.FILE_NEW_VILLIAN_FRONT, selectedCard);
-        }
-        else if (selectedCard instanceof VillainCard) {
+        } else if (selectedCard instanceof VillainCard) {
             frame.newWindow(CreatorFrame.FILE_NEW_VILLIAN_CARD, selectedCard);
-        }
-        else if (selectedCard instanceof EnvironmentCard) {
+        } else if (selectedCard instanceof EnvironmentCard) {
             frame.newWindow(CreatorFrame.FILE_NEW_ENVIRONMENT_CARD, selectedCard);
         }
     }
 
     public void saveDeck() {
         try {
-            JFileChooser chooser = frame.getChooser();
-            int outcome = chooser.showSaveDialog(this);
+            String filePath = frame.browseForSavePath(CreatorFrame.BrowserFileType.XML);
+            if (filePath.equals("")) {
+                return;
+            }
 
-            if (outcome == JFileChooser.APPROVE_OPTION) {
-                File f = chooser.getSelectedFile();
-                try (FileWriter fstream = new FileWriter(f); BufferedWriter out = new BufferedWriter(fstream)) {
-                    out.write(deck.getXML());      
-                }
+            File f = new File(filePath);
+            try (FileWriter fstream = new FileWriter(f); BufferedWriter out = new BufferedWriter(fstream)) {
+                out.write(deck.getXML());
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -359,54 +351,50 @@ public final class DeckManager extends JSplitPane implements ListSelectionListen
     private void exportDeckIndividually(String type) {
         CreatorTab creator = null;
 
-        JFileChooser chooser = frame.getChooser();
-        chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-        int outcome = chooser.showSaveDialog(frame);
-
-        if (outcome == JFileChooser.APPROVE_OPTION) {
-            for (Card c : deck.getCards()) {
-                if (c != null) {
-                    if (c instanceof HeroFrontCard) {
-                        creator = new CreatorTabHeroFront(frame, (HeroFrontCard) c);
-                    }
-
-                    if (c instanceof HeroBackCard) {
-                        creator = new CreatorTabHeroBack(frame, (HeroBackCard) c);
-                    }
-
-                    if (c instanceof BackCard) {
-                        creator = new CreatorTabCardBack(frame, (BackCard) c);
-                    }
-
-                    if (c instanceof HeroCard) {
-                        creator = new CreatorTabHeroCard(frame, (HeroCard) c);
-                    }
-
-                    if (c instanceof VillainFrontCard) {
-                        creator = new CreatorTabVillainFront(frame, (VillainFrontCard) c);
-                    }
-
-                    if (c instanceof VillainCard) {
-                        creator = new CreatorTabVillainCard(frame, (VillainCard) c);
-                    }
-
-                    if (c instanceof EnvironmentCard) {
-                        creator = new CreatorTabEnvironmentCard(frame, (EnvironmentCard) c);
-                    }
-
-                    if (type.equals("png")) {
-                        creator.saveToPNG(chooser.getSelectedFile().getAbsolutePath());
-                    }
-
-                    if (type.equals("jpg")) {
-                        creator.saveToJPG(chooser.getSelectedFile().getAbsolutePath());
-                    }
-                }
-            }
-
-            JOptionPane.showMessageDialog(frame, "Export Complete!");
+        String dirPath = frame.browseForSavePath(CreatorFrame.BrowserFileType.Directory);
+        if (dirPath.equals("")) {
+            return;
         }
 
-        chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        for (Card c : deck.getCards()) {
+            if (c != null) {
+                if (c instanceof HeroFrontCard) {
+                    creator = new CreatorTabHeroFront(frame, (HeroFrontCard) c);
+                }
+
+                if (c instanceof HeroBackCard) {
+                    creator = new CreatorTabHeroBack(frame, (HeroBackCard) c);
+                }
+
+                if (c instanceof BackCard) {
+                    creator = new CreatorTabCardBack(frame, (BackCard) c);
+                }
+
+                if (c instanceof HeroCard) {
+                    creator = new CreatorTabHeroCard(frame, (HeroCard) c);
+                }
+
+                if (c instanceof VillainFrontCard) {
+                    creator = new CreatorTabVillainFront(frame, (VillainFrontCard) c);
+                }
+
+                if (c instanceof VillainCard) {
+                    creator = new CreatorTabVillainCard(frame, (VillainCard) c);
+                }
+
+                if (c instanceof EnvironmentCard) {
+                    creator = new CreatorTabEnvironmentCard(frame, (EnvironmentCard) c);
+                }
+
+                if (type.equals("png")) {
+                    creator.saveToPNG(dirPath);
+                }
+                else if (type.equals("jpg")) {
+                    creator.saveToJPG(dirPath);
+                }
+            }
+        }
+
+        JOptionPane.showMessageDialog(frame, "Export Complete!");
     }
 }

@@ -13,13 +13,11 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JColorChooser;
-import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-import say.swing.JFontChooser;
 import uk.co.fostorial.sotm.CreatorFrame;
 import uk.co.fostorial.sotm.structure.HeroCard;
 
@@ -399,44 +397,41 @@ public class CreatorTabHeroCard extends CreatorTab implements ActionListener {
                 nameUnderlay.setBackground(c);
             }
         }
-
-        if (e.getSource().equals(portraitButton)) {
-            JFileChooser chooser = getFrame().getChooser();
-            int outcome = chooser.showOpenDialog(this);
-
-            if (outcome == JFileChooser.APPROVE_OPTION) {
-                portraitPath = chooser.getSelectedFile().getAbsolutePath();
-                ImageIcon ii = new ImageIcon(chooser.getSelectedFile().getAbsolutePath());
-                Image image = getScaledImage(ii.getImage(), 703 - 46, 608 - 122);
-                ii = new ImageIcon(image);
-                portrait.setIcon(ii);
+        else if (e.getSource().equals(portraitButton)) {
+            String filePath = getFrame().browseForLoadPath(CreatorFrame.BrowserFileType.Image);
+            if(filePath.equals("")) {
+                return;
             }
+
+            portraitPath = filePath;
+            ImageIcon ii = new ImageIcon(portraitPath);
+            Image image = getScaledImage(ii.getImage(), 703 - 46, 608 - 122);
+            ii = new ImageIcon(image);
+            portrait.setIcon(ii);
         }
-
-        if (e.getSource().equals(hpImageButton)) {
-            JFileChooser chooser = getFrame().getChooser();
-            int outcome = chooser.showOpenDialog(this);
-
-            if (outcome == JFileChooser.APPROVE_OPTION) {
-                hpImagePath = chooser.getSelectedFile().getAbsolutePath();
-                ImageIcon ii = new ImageIcon(chooser.getSelectedFile().getAbsolutePath());
-                Image image = getScaledImage(ii.getImage(), 135, 135);
-                ii = new ImageIcon(image);
-                hpImage.setIcon(ii);
+        else if (e.getSource().equals(hpImageButton)) {
+            String filePath = getFrame().browseForLoadPath(CreatorFrame.BrowserFileType.Image);
+            if(filePath.equals("")) {
+                return;
             }
-        }
-        
-        if (e.getSource().equals(biImageButton)) {
-            JFileChooser chooser = getFrame().getChooser();
-            int outcome = chooser.showOpenDialog(this);
-
-            if (outcome == JFileChooser.APPROVE_OPTION) {
-                biImagePath = chooser.getSelectedFile().getAbsolutePath();
-                ImageIcon ii = new ImageIcon(chooser.getSelectedFile().getAbsolutePath());
-                Image image = getScaledImage(ii.getImage(), 135, 135);
-                ii = new ImageIcon(image);
-                biImage.setIcon(ii);
+            
+            hpImagePath = filePath;
+            ImageIcon ii = new ImageIcon(hpImagePath);
+            Image image = getScaledImage(ii.getImage(), 135, 135);
+            ii = new ImageIcon(image);
+            hpImage.setIcon(ii);
+        }     
+        else if (e.getSource().equals(biImageButton)) {
+            String filePath = getFrame().browseForLoadPath(CreatorFrame.BrowserFileType.Image);
+            if(filePath.equals("")) {
+                return;
             }
+            
+            biImagePath = filePath;
+            ImageIcon ii = new ImageIcon(biImagePath);
+            Image image = getScaledImage(ii.getImage(), 135, 135);
+            ii = new ImageIcon(image);
+            biImage.setIcon(ii);
         }
 
         if (e.getSource().equals(hpCheckBox)) {
@@ -460,13 +455,12 @@ public class CreatorTabHeroCard extends CreatorTab implements ActionListener {
         }
 
         if (e.getSource().equals(nameFontButton)) {
-            JFontChooser chooser = new JFontChooser();
-            chooser.setSelectedFont(name.getFont());
-            int outcome = chooser.showDialog(this);
-
-            if (outcome == JFileChooser.APPROVE_OPTION) {
-                name.setFont(chooser.getSelectedFont());
+            Font font = getFrame().editFont(name.getFont());
+            if(font == null) {
+                return;
             }
+            
+            name.setFont(font);
         }
 
         if (e.getSource().equals(nameFontColorButton)) {
@@ -477,13 +471,12 @@ public class CreatorTabHeroCard extends CreatorTab implements ActionListener {
         }
 
         if (e.getSource().equals(hpFontButton)) {
-            JFontChooser chooser = new JFontChooser();
-            chooser.setSelectedFont(healthPoints.getFont());
-            int outcome = chooser.showDialog(this);
-
-            if (outcome == JFileChooser.APPROVE_OPTION) {
-                healthPoints.setFont(chooser.getSelectedFont());
+            Font font = getFrame().editFont(healthPoints.getFont());
+            if(font == null) {
+                return;
             }
+            
+            healthPoints.setFont(font);
         }
 
         if (e.getSource().equals(hpFontColorButton)) {
@@ -494,13 +487,12 @@ public class CreatorTabHeroCard extends CreatorTab implements ActionListener {
         }
 
         if (e.getSource().equals(classFontButton)) {
-            JFontChooser chooser = new JFontChooser();
-            chooser.setSelectedFont(cardClass.getFont());
-            int outcome = chooser.showDialog(this);
-
-            if (outcome == JFileChooser.APPROVE_OPTION) {
-                cardClass.setFont(chooser.getSelectedFont());
+            Font font = getFrame().editFont(cardClass.getFont());
+            if(font == null) {
+                return;
             }
+            
+            cardClass.setFont(font);
         }
 
         if (e.getSource().equals(classFontColorButton)) {
@@ -511,13 +503,12 @@ public class CreatorTabHeroCard extends CreatorTab implements ActionListener {
         }
 
         if (e.getSource().equals(descriptionFontButton)) {
-            JFontChooser chooser = new JFontChooser();
-            chooser.setSelectedFont(cardText.getFont());
-            int outcome = chooser.showDialog(this);
-
-            if (outcome == JFileChooser.APPROVE_OPTION) {
-                cardText.setFont(chooser.getSelectedFont());
+            Font font = getFrame().editFont(cardText.getFont());
+            if(font == null) {
+                return;
             }
+            
+            cardText.setFont(font);
         }
 
         if (e.getSource().equals(descriptionFontColorButton)) {
@@ -528,15 +519,14 @@ public class CreatorTabHeroCard extends CreatorTab implements ActionListener {
         }
 
         if (e.getSource().equals(quoteFontButton)) {
-            JFontChooser chooser = new JFontChooser();
-            chooser.setSelectedFont(quoteText1.getFont());
-            int outcome = chooser.showDialog(this);
-
-            if (outcome == JFileChooser.APPROVE_OPTION) {
-                quoteText1.setFont(chooser.getSelectedFont());
-                quoteText2.setFont(chooser.getSelectedFont());
-                issueText.setFont(chooser.getSelectedFont());
+            Font font = getFrame().editFont(quoteText1.getFont());
+            if(font == null) {
+                return;
             }
+            
+            quoteText1.setFont(font);
+            quoteText2.setFont(font);
+            issueText.setFont(font);
         }
 
         if (e.getSource().equals(quoteFontColorButton)) {

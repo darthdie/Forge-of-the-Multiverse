@@ -3,7 +3,6 @@ package uk.co.fostorial.sotm.design;
 import java.awt.Component;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -67,27 +66,20 @@ public class CreatorTab extends JSplitPane {
 
     public void saveToJPG() {
         try {
-            JFileChooser chooser = frame.getChooser();
-            int outcome = chooser.showSaveDialog(this);
-
-            if (outcome == JFileChooser.APPROVE_OPTION) {
-                File f = chooser.getSelectedFile();
-                if (f.getAbsolutePath().toLowerCase().endsWith(".jpg") == false
-                        || f.getAbsolutePath().toLowerCase().endsWith(".jpeg") == false) {
-                    f = new File(f.getAbsolutePath() + ".jpg");
-                }
-
-                int w = imageWidth;
-                int h = imageHeight;
-                int type = BufferedImage.TYPE_INT_RGB;
-                BufferedImage image = new BufferedImage(w, h, type);
-                Graphics2D g2 = image.createGraphics();
-                imagePane.paint(g2);
-                g2.dispose();
-
-                File outputfile = f;
-                ImageIO.write(image, "jpg", outputfile);
+            String filePath = getFrame().browseForSavePath(CreatorFrame.BrowserFileType.JPG);
+            if(filePath.equals("")) {
+                return;
             }
+
+            int w = imageWidth;
+            int h = imageHeight;
+            int type = BufferedImage.TYPE_INT_RGB;
+            BufferedImage image = new BufferedImage(w, h, type);
+            Graphics2D g2 = image.createGraphics();
+            imagePane.paint(g2);
+            g2.dispose();
+
+            ImageIO.write(image, "jpg", new File(filePath));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -95,26 +87,20 @@ public class CreatorTab extends JSplitPane {
 
     public void saveToPNG() {
         try {
-            JFileChooser chooser = frame.getChooser();
-            int outcome = chooser.showSaveDialog(this);
-
-            if (outcome == JFileChooser.APPROVE_OPTION) {
-                File f = chooser.getSelectedFile();
-                if (f.getAbsolutePath().toLowerCase().endsWith(".png") == false) {
-                    f = new File(f.getAbsolutePath() + ".png");
-                }
-
-                int w = imageWidth;
-                int h = imageHeight;
-                int type = BufferedImage.TYPE_INT_RGB;
-                BufferedImage image = new BufferedImage(w, h, type);
-                Graphics2D g2 = image.createGraphics();
-                imagePane.paint(g2);
-                g2.dispose();
-
-                File outputfile = f;
-                ImageIO.write(image, "png", outputfile);
+            String filePath = getFrame().browseForSavePath(CreatorFrame.BrowserFileType.PNG);
+            if(filePath.equals("")) {
+                return;
             }
+
+            int w = imageWidth;
+            int h = imageHeight;
+            int type = BufferedImage.TYPE_INT_RGB;
+            BufferedImage image = new BufferedImage(w, h, type);
+            Graphics2D g2 = image.createGraphics();
+            imagePane.paint(g2);
+            g2.dispose();
+
+            ImageIO.write(image, "png", new File(filePath));
         } catch (IOException e) {
             e.printStackTrace();
         }

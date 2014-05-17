@@ -12,11 +12,9 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JColorChooser;
-import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
-import say.swing.JFontChooser;
 import uk.co.fostorial.sotm.CreatorFrame;
 import uk.co.fostorial.sotm.structure.HeroBackCard;
 
@@ -263,37 +261,35 @@ public class CreatorTabHeroBack extends CreatorTab implements ActionListener {
                 powerUnderlay.setBackground(c);
             }
         }
-
-        if (e.getSource().equals(portraitButton)) {
-            JFileChooser chooser = getFrame().getChooser();
-            int outcome = chooser.showOpenDialog(this);
-
-            if (outcome == JFileChooser.APPROVE_OPTION) {
-                portraitPath = chooser.getSelectedFile().getAbsolutePath();
-                ImageIcon ii = new ImageIcon(chooser.getSelectedFile().getAbsolutePath());
-                Image image = getScaledImage(ii.getImage(), (int) getImagePane().getPreferredSize().getWidth(), (int) getImagePane().getPreferredSize().getHeight());
-                ii = new ImageIcon(image);
-                portrait.setIcon(ii);
-                portrait.setBounds(0, 0, (int) getImagePane().getPreferredSize().getWidth(), (int) getImagePane().getPreferredSize().getHeight());
+        else if (e.getSource().equals(portraitButton)) {
+            String filePath = getFrame().browseForLoadPath(CreatorFrame.BrowserFileType.Image);
+            if(filePath.equals("")) {
+                return;
             }
+            
+            portraitPath = filePath;
+            ImageIcon ii = new ImageIcon(filePath);
+            Image image = getScaledImage(ii.getImage(), (int) getImagePane().getPreferredSize().getWidth(), (int) getImagePane().getPreferredSize().getHeight());
+            ii = new ImageIcon(image);
+            portrait.setIcon(ii);
+            portrait.setBounds(0, 0, (int) getImagePane().getPreferredSize().getWidth(), (int) getImagePane().getPreferredSize().getHeight());
         }
 
         if (e.getSource().equals(textFontButton)) {
-            JFontChooser chooser = new JFontChooser();
-            chooser.setSelectedFont(powerText1.getFont());
-            int outcome = chooser.showDialog(this);
-
-            if (outcome == JFileChooser.APPROVE_OPTION) {
-                powerText1.setFont(chooser.getSelectedFont());
-                powerText2.setFont(chooser.getSelectedFont());
-                powerText3.setFont(chooser.getSelectedFont());
-                powerText4.setFont(chooser.getSelectedFont());
-                powerText5.setFont(chooser.getSelectedFont());
-                powerText6.setFont(chooser.getSelectedFont());
-                powerLabel1.setFont(chooser.getSelectedFont());
-                powerLabel2.setFont(chooser.getSelectedFont());
-                powerLabel3.setFont(chooser.getSelectedFont());
+            Font font = getFrame().editFont(powerText1.getFont());
+            if(font == null) {
+                return;
             }
+            
+            powerText1.setFont(font);
+            powerText2.setFont(font);
+            powerText3.setFont(font);
+            powerText4.setFont(font);
+            powerText5.setFont(font);
+            powerText6.setFont(font);
+            powerLabel1.setFont(font);
+            powerLabel2.setFont(font);
+            powerLabel3.setFont(font);
         }
 
         if (e.getSource().equals(textFontColorButton)) {

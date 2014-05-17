@@ -13,13 +13,11 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JColorChooser;
-import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-import say.swing.JFontChooser;
 import uk.co.fostorial.sotm.CreatorFrame;
 import uk.co.fostorial.sotm.structure.EnvironmentCard;
 
@@ -365,41 +363,37 @@ public class CreatorTabEnvironmentCard extends CreatorTab implements ActionListe
                 nameUnderlay.setBackground(c);
             }
         }
-
-        if (e.getSource().equals(quoteBGColour)) {
+        else if (e.getSource().equals(quoteBGColour)) {
             Color c = selectColor(quoteUnderlay.getBackground());
             if (c != null) {
                 quoteUnderlay.setBackground(c);
             }
         }
-
-        if (e.getSource().equals(portraitButton)) {
-            JFileChooser chooser = getFrame().getChooser();
-            int outcome = chooser.showOpenDialog(this);
-
-            if (outcome == JFileChooser.APPROVE_OPTION) {
-                portraitPath = chooser.getSelectedFile().getAbsolutePath();
-                ImageIcon ii = new ImageIcon(chooser.getSelectedFile().getAbsolutePath());
-                Image image = getScaledImage(ii.getImage(), 703 - 46, 608 - 122);
-                ii = new ImageIcon(image);
-                portrait.setIcon(ii);
+        else if (e.getSource().equals(portraitButton)) {
+            String filePath = getFrame().browseForLoadPath(CreatorFrame.BrowserFileType.Image);
+            if(filePath.equals("")) {
+                return;
             }
+            
+            portraitPath = filePath;
+            ImageIcon ii = new ImageIcon(portraitPath);
+            Image image = getScaledImage(ii.getImage(), 703 - 46, 608 - 122);
+            ii = new ImageIcon(image);
+            portrait.setIcon(ii);
         }
-
-        if (e.getSource().equals(hpImageButton)) {
-            JFileChooser chooser = getFrame().getChooser();
-            int outcome = chooser.showOpenDialog(this);
-
-            if (outcome == JFileChooser.APPROVE_OPTION) {
-                hpImagePath = chooser.getSelectedFile().getAbsolutePath();
-                ImageIcon ii = new ImageIcon(chooser.getSelectedFile().getAbsolutePath());
-                Image image = getScaledImage(ii.getImage(), 135, 135);
-                ii = new ImageIcon(image);
-                hpImage.setIcon(ii);
+        else if (e.getSource().equals(hpImageButton)) {
+            String filePath = getFrame().browseForLoadPath(CreatorFrame.BrowserFileType.Image);
+            if(filePath.equals("")) {
+                return;
             }
-        }
 
-        if (e.getSource().equals(hpCheckBox)) {
+            hpImagePath = filePath;
+            ImageIcon ii = new ImageIcon(hpImagePath);
+            Image image = getScaledImage(ii.getImage(), 135, 135);
+            ii = new ImageIcon(image);
+            hpImage.setIcon(ii);
+        }
+        else if (e.getSource().equals(hpCheckBox)) {
             if (hpCheckBox.isSelected()) {
                 hpImage.setVisible(true);
                 healthPoints.setVisible(true);
@@ -408,8 +402,7 @@ public class CreatorTabEnvironmentCard extends CreatorTab implements ActionListe
                 healthPoints.setVisible(false);
             }
         }
-
-        if (e.getSource().equals(classCheckBox)) {
+        else if (e.getSource().equals(classCheckBox)) {
             if (classCheckBox.isSelected()) {
                 classUnderlay.setVisible(true);
                 cardClass.setVisible(true);
@@ -418,110 +411,90 @@ public class CreatorTabEnvironmentCard extends CreatorTab implements ActionListe
                 cardClass.setVisible(false);
             }
         }
-
-        if (e.getSource().equals(nameFontButton)) {
-            JFontChooser chooser = new JFontChooser();
-            chooser.setSelectedFont(name.getFont());
-            int outcome = chooser.showDialog(this);
-
-            if (outcome == JFileChooser.APPROVE_OPTION) {
-                name.setFont(chooser.getSelectedFont());
+        else if (e.getSource().equals(nameFontButton)) {
+            Font font = getFrame().editFont(name.getFont());
+            if(font == null) {
+                return;
             }
+            
+            name.setFont(font);
         }
-
-        if (e.getSource().equals(nameFontColorButton)) {
+        else if (e.getSource().equals(nameFontColorButton)) {
             Color c = selectColor(name.getForeground());
             if (c != null) {
                 name.setForeground(c);
             }
         }
-
-        if (e.getSource().equals(hpFontButton)) {
-            JFontChooser chooser = new JFontChooser();
-            chooser.setSelectedFont(healthPoints.getFont());
-            int outcome = chooser.showDialog(this);
-
-            if (outcome == JFileChooser.APPROVE_OPTION) {
-                healthPoints.setFont(chooser.getSelectedFont());
+        else if (e.getSource().equals(hpFontButton)) {
+            Font font = getFrame().editFont(healthPoints.getFont());
+            if(font == null) {
+                return;
             }
+            
+            healthPoints.setFont(font);
         }
-
-        if (e.getSource().equals(hpFontColorButton)) {
+        else if (e.getSource().equals(hpFontColorButton)) {
             Color c = selectColor(healthPoints.getForeground());
             if (c != null) {
                 healthPoints.setForeground(c);
             }
         }
-
-        if (e.getSource().equals(classFontButton)) {
-            JFontChooser chooser = new JFontChooser();
-            chooser.setSelectedFont(cardClass.getFont());
-            int outcome = chooser.showDialog(this);
-
-            if (outcome == JFileChooser.APPROVE_OPTION) {
-                cardClass.setFont(chooser.getSelectedFont());
+        else if (e.getSource().equals(classFontButton)) {
+            Font font = getFrame().editFont(cardClass.getFont());
+            if(font == null) {
+                return;
             }
+            
+            cardClass.setFont(font);
         }
-
-        if (e.getSource().equals(classFontColorButton)) {
+        else if (e.getSource().equals(classFontColorButton)) {
             Color c = selectColor(cardClass.getForeground());
             if (c != null) {
                 cardClass.setForeground(c);
             }
         }
-
-        if (e.getSource().equals(descriptionFontButton)) {
-            JFontChooser chooser = new JFontChooser();
-            chooser.setSelectedFont(cardText.getFont());
-            int outcome = chooser.showDialog(this);
-
-            if (outcome == JFileChooser.APPROVE_OPTION) {
-                cardText.setFont(chooser.getSelectedFont());
+        else if (e.getSource().equals(descriptionFontButton)) {
+            Font font = getFrame().editFont(cardText.getFont());
+            if(font == null) {
+                return;
             }
+            
+            cardText.setFont(font);
         }
-
-        if (e.getSource().equals(descriptionFontColorButton)) {
+        else if (e.getSource().equals(descriptionFontColorButton)) {
             Color c = selectColor(cardText.getForeground());
             if (c != null) {
                 cardText.setForeground(c);
             }
         }
-
-        if (e.getSource().equals(quoteFontButton)) {
-            JFontChooser chooser = new JFontChooser();
-            chooser.setSelectedFont(quoteText1.getFont());
-            int outcome = chooser.showDialog(this);
-
-            if (outcome == JFileChooser.APPROVE_OPTION) {
-                quoteText1.setFont(chooser.getSelectedFont());
+        else if (e.getSource().equals(quoteFontButton)) {
+            Font font = getFrame().editFont(quoteText1.getFont());
+            if(font == null) {
+                return;
             }
+            
+            quoteText1.setFont(font);
         }
-
-        if (e.getSource().equals(quoteFontColorButton)) {
+        else if (e.getSource().equals(quoteFontColorButton)) {
             Color c = selectColor(quoteText1.getForeground());
             if (c != null) {
                 quoteText1.setForeground(c);
             }
         }
-
-        if (e.getSource().equals(updateButton)) {
+        else if (e.getSource().equals(updateButton)) {
             updateCard();
         }
-
-        if (e.getSource().equals(saveButton)) {
+        else if (e.getSource().equals(saveButton)) {
             updateCard();
             getFrame().closeCurrentFrame();
         }
-
-        if (e.getSource().equals(cancelButton)) {
+        else if (e.getSource().equals(cancelButton)) {
             getFrame().closeCurrentFrame();
         }
     }
 
     private Color selectColor(Color colour) {
-        Color c = colour;
-        c = JColorChooser.showDialog(this, "Select Colour...", c);
-        return c;
+        return JColorChooser.showDialog(this, "Select Colour...", colour);
     }
 
     private void updateCard() {
