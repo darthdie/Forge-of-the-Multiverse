@@ -3,6 +3,7 @@ package uk.co.fostorial.sotm.structure;
 import java.awt.Color;
 import java.awt.Font;
 import java.io.File;
+import java.util.Objects;
 
 public class HeroCard extends Card {
 
@@ -65,6 +66,8 @@ public class HeroCard extends Card {
         descriptionFont = new Font("Comic Book", Font.PLAIN, 24);
         quoteFontColor = Color.black;
         quoteFont = new Font("Comic Book", Font.PLAIN, 20);
+        
+        setIsDirty(false);
     }
 
     public String getXML() {
@@ -105,7 +108,10 @@ public class HeroCard extends Card {
     }
 
     public void setQuoteString1(String quoteString1) {
-        this.quoteString1 = quoteString1;
+        if(!Objects.equals(this.quoteString1, quoteString1)) {
+            this.quoteString1 = quoteString1;
+            setIsDirty(true);
+        }
     }
 
     public String getQuoteString2() {
@@ -113,7 +119,10 @@ public class HeroCard extends Card {
     }
 
     public void setQuoteString2(String quoteString2) {
-        this.quoteString2 = quoteString2;
+        if(!Objects.equals(this.quoteString2, quoteString2)) {
+            this.quoteString2 = quoteString2;
+            setIsDirty(true);
+        }
     }
 
     public String getIssueString() {
@@ -121,7 +130,10 @@ public class HeroCard extends Card {
     }
 
     public void setIssueString(String issueString) {
-        this.issueString = issueString;
+        if(!Objects.equals(this.issueString, issueString)) {
+            this.issueString = issueString;
+            setIsDirty(true);
+        }
     }
 
     public boolean isHealthPointsVisible() {
@@ -129,7 +141,10 @@ public class HeroCard extends Card {
     }
 
     public void setHealthPointsVisible(boolean healthPointsVisible) {
-        this.healthPointsVisible = healthPointsVisible;
+        if(this.healthPointsVisible != healthPointsVisible) {
+            this.healthPointsVisible = healthPointsVisible;
+            setIsDirty(true);
+        }
     }
     
     public boolean isBonusIconVisible() {
@@ -137,7 +152,10 @@ public class HeroCard extends Card {
     }
 
     public void setBonusIconVisible(boolean bonusIconVisible) {
-        this.bonusIconVisible = bonusIconVisible;
+        if(this.bonusIconVisible != bonusIconVisible) {
+            this.bonusIconVisible = bonusIconVisible;
+            setIsDirty(true);
+        }
     }
 
     public String getHealthPointsImage() {
@@ -145,7 +163,10 @@ public class HeroCard extends Card {
     }
 
     public void setHealthPointsImage(String healthPointsImage) {
-        this.healthPointsImage = healthPointsImage;
+        if(!Objects.equals(this.healthPointsImage, healthPointsImage)) {
+            this.healthPointsImage = healthPointsImage;
+            setIsDirty(true);
+        }
     }
 
     public String getBonusIconImage() {
@@ -153,7 +174,10 @@ public class HeroCard extends Card {
     }
 
     public void setBonusIconImage(String bonusIconImage) {
-        this.bonusIconImage = bonusIconImage;
+        if(!Objects.equals(this.bonusIconImage, bonusIconImage)) {
+            this.bonusIconImage = bonusIconImage;
+            setIsDirty(true);
+        }
     }
     
     public String getCardText() {
@@ -161,7 +185,10 @@ public class HeroCard extends Card {
     }
 
     public void setCardText(String cardText) {
-        this.cardText = cardText;
+        if(!Objects.equals(this.cardText, cardText)) {
+            this.cardText = cardText;
+            setIsDirty(true);
+        }
     }
 
     public Color getNameColor() {
@@ -169,7 +196,10 @@ public class HeroCard extends Card {
     }
 
     public void setNameColor(Color nameColor) {
-        this.nameColor = nameColor;
+        if(!Objects.equals(this.nameColor, nameColor)) {
+            this.nameColor = nameColor;
+            setIsDirty(true);
+        }
     }
 
     public Color getClassColor() {
@@ -177,7 +207,10 @@ public class HeroCard extends Card {
     }
 
     public void setClassColor(Color classColor) {
-        this.classColor = classColor;
+        if(!Objects.equals(this.classColor, classColor)) {
+            this.classColor = classColor;
+            setIsDirty(true);
+        }
     }
 
     public Font getNameFont() {
@@ -185,7 +218,10 @@ public class HeroCard extends Card {
     }
 
     public void setNameFont(Font nameFont) {
-        this.nameFont = nameFont;
+        if(!Objects.equals(this.nameFont, nameFont)) {
+            this.nameFont = nameFont;
+            setIsDirty(true);
+        }
     }
 
     public Color getNameFontColor() {
@@ -193,7 +229,10 @@ public class HeroCard extends Card {
     }
 
     public void setNameFontColor(Color nameFontColor) {
-        this.nameFontColor = nameFontColor;
+        if(!Objects.equals(this.nameFontColor, nameFontColor)) {
+            this.nameFontColor = nameFontColor;
+            setIsDirty(true);
+        }
     }
 
     public Font getHpFont() {
@@ -201,7 +240,10 @@ public class HeroCard extends Card {
     }
 
     public void setHpFont(Font hpFont) {
-        this.hpFont = hpFont;
+        if(!Objects.equals(this.hpFont, hpFont)) {
+            this.hpFont = hpFont;
+            setIsDirty(true);
+        }
     }
 
     public Color getHpFontColor() {
@@ -209,7 +251,10 @@ public class HeroCard extends Card {
     }
 
     public void setHpFontColor(Color hpFontColor) {
-        this.hpFontColor = hpFontColor;
+        if(!Objects.equals(this.hpFontColor, hpFontColor)) {
+            this.hpFontColor = hpFontColor;
+            setIsDirty(true);
+        }
     }
 
     public Font getClassFont() {
@@ -217,7 +262,10 @@ public class HeroCard extends Card {
     }
 
     public void setClassFont(Font classFont) {
-        this.classFont = classFont;
+        if(!Objects.equals(this.classFont, classFont)) {
+            this.classFont = classFont;
+            setIsDirty(true);
+        }
     }
 
     public Color getClassFontColor() {
@@ -225,7 +273,10 @@ public class HeroCard extends Card {
     }
 
     public void setClassFontColor(Color classFontColor) {
-        this.classFontColor = classFontColor;
+        if(!Objects.equals(this.classFontColor, classFontColor)) {
+            this.classFontColor = classFontColor;
+            setIsDirty(true);
+        }
     }
 
     public Font getDescriptionFont() {
@@ -233,7 +284,10 @@ public class HeroCard extends Card {
     }
 
     public void setDescriptionFont(Font descriptionFont) {
-        this.descriptionFont = descriptionFont;
+        if(!Objects.equals(this.descriptionFont, descriptionFont)) {
+            this.descriptionFont = descriptionFont;
+            setIsDirty(true);
+        }
     }
 
     public Color getDescriptionFontColor() {
@@ -241,7 +295,10 @@ public class HeroCard extends Card {
     }
 
     public void setDescriptionFontColor(Color descriptionFontColor) {
-        this.descriptionFontColor = descriptionFontColor;
+        if(!Objects.equals(this.descriptionFontColor, descriptionFontColor)) {
+            this.descriptionFontColor = descriptionFontColor;
+            setIsDirty(true);
+        }
     }
 
     public Font getQuoteFont() {
@@ -249,7 +306,10 @@ public class HeroCard extends Card {
     }
 
     public void setQuoteFont(Font quoteFont) {
-        this.quoteFont = quoteFont;
+        if(!Objects.equals(this.quoteFont, quoteFont)) {
+            this.quoteFont = quoteFont;
+            setIsDirty(true);
+        }
     }
 
     public Color getQuoteFontColor() {
@@ -257,6 +317,9 @@ public class HeroCard extends Card {
     }
 
     public void setQuoteFontColor(Color quoteFontColor) {
-        this.quoteFontColor = quoteFontColor;
+        if(!Objects.equals(this.quoteFontColor, quoteFontColor)) {
+            this.quoteFontColor = quoteFontColor;
+            setIsDirty(true);
+        }
     }
 }

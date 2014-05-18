@@ -1,11 +1,11 @@
 package uk.co.fostorial.sotm.deck;
 
+import java.awt.Component;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import javax.swing.ImageIcon;
-import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
@@ -37,7 +37,6 @@ import uk.co.fostorial.sotm.structure.VillainDeck;
 import uk.co.fostorial.sotm.structure.VillainFrontCard;
 
 public final class DeckManager extends JSplitPane implements ListSelectionListener {
-
     private static final long serialVersionUID = 7972443091809248703L;
 
     public final static int VILLAIN_MODE = 0;
@@ -56,17 +55,10 @@ public final class DeckManager extends JSplitPane implements ListSelectionListen
     private Card selectedCard;
 
     private final CreatorFrame frame;
-
-    private String deckName;
-
     private CreatorTab creator;
 
     public String getDeckName() {
-        return deckName;
-    }
-
-    public void setDeckName(String deckName) {
-        this.deckName = deckName;
+        return deck.getName();
     }
 
     public CreatorTab getCreator() {
@@ -199,43 +191,37 @@ public final class DeckManager extends JSplitPane implements ListSelectionListen
                 ImageIcon ii = new ImageIcon(creator.getImage(214, 300));
                 preview.setIcon(ii);
             }
-
-            if (selectedCard instanceof HeroBackCard) {
+            else if (selectedCard instanceof HeroBackCard) {
                 creator = new CreatorTabHeroBack(frame, (HeroBackCard) selectedCard);
 
                 ImageIcon ii = new ImageIcon(creator.getImage(214, 300));
                 preview.setIcon(ii);
             }
-
-            if (selectedCard instanceof BackCard) {
+            else if (selectedCard instanceof BackCard) {
                 creator = new CreatorTabCardBack(frame, (BackCard) selectedCard);
 
                 ImageIcon ii = new ImageIcon(creator.getImage(214, 300));
                 preview.setIcon(ii);
             }
-
-            if (selectedCard instanceof HeroCard) {
+            else if (selectedCard instanceof HeroCard) {
                 creator = new CreatorTabHeroCard(frame, (HeroCard) selectedCard);
 
                 ImageIcon ii = new ImageIcon(creator.getImage(214, 300));
                 preview.setIcon(ii);
             }
-
-            if (selectedCard instanceof VillainFrontCard) {
+            else if (selectedCard instanceof VillainFrontCard) {
                 creator = new CreatorTabVillainFront(frame, (VillainFrontCard) selectedCard);
 
                 ImageIcon ii = new ImageIcon(creator.getImage(214, 300));
                 preview.setIcon(ii);
             }
-
-            if (selectedCard instanceof VillainCard) {
+            else if (selectedCard instanceof VillainCard) {
                 creator = new CreatorTabVillainCard(frame, (VillainCard) selectedCard);
 
                 ImageIcon ii = new ImageIcon(creator.getImage(214, 300));
                 preview.setIcon(ii);
             }
-
-            if (selectedCard instanceof EnvironmentCard) {
+            else if (selectedCard instanceof EnvironmentCard) {
                 creator = new CreatorTabEnvironmentCard(frame, (EnvironmentCard) selectedCard);
 
                 ImageIcon ii = new ImageIcon(creator.getImage(214, 300));
@@ -324,19 +310,33 @@ public final class DeckManager extends JSplitPane implements ListSelectionListen
         }
     }
 
-    public void saveDeck() {
+    public boolean saveDeck() {
         try {
-            String filePath = frame.browseForSavePath(CreatorFrame.BrowserFileType.XML);
+            String filePath = frame.browseForSavePath(CreatorFrame.BrowserFileType.Deck);
             if (filePath.equals("")) {
-                return;
+                return false;
             }
 
             File f = new File(filePath);
             try (FileWriter fstream = new FileWriter(f); BufferedWriter out = new BufferedWriter(fstream)) {
                 out.write(deck.getXML());
             }
+            
+            String name = f.getName().replace(".xml", "");
+            for(int i = 0; i < frame.getTabbedPane().getTabCount(); i++) {
+                if(frame.getTabbedPane().getTitleAt(i).equals(deck.getName())) {
+                    frame.getTabbedPane().setTitleAt(i, name);
+                }
+            }
+            
+            deck.setName(name);
+            
+            deck.setIsDirty(false);
+            
+            return true;
         } catch (IOException e) {
             e.printStackTrace();
+            return false;
         }
     }
 

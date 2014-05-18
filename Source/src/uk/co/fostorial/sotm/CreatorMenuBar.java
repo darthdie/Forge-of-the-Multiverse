@@ -13,6 +13,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.KeyStroke;
 import uk.co.fostorial.sotm.deck.DeckManager;
 import uk.co.fostorial.sotm.deck.DeckPrinter;
+import uk.co.fostorial.sotm.structure.Deck;
 
 public class CreatorMenuBar extends JMenuBar implements ActionListener {
 
@@ -271,39 +272,48 @@ public class CreatorMenuBar extends JMenuBar implements ActionListener {
         if (e.getSource().equals(fileNewVillainDeck)) {
             frame.newWindow(CreatorFrame.FILE_NEW_VILLAIN_DECK, null);
         }
-
-        if (e.getSource().equals(fileNewEnvironmentDeck)) {
+        else if (e.getSource().equals(fileNewEnvironmentDeck)) {
             frame.newWindow(CreatorFrame.FILE_NEW_ENVIRONMENT_DECK, null);
         }
-
-        if (e.getSource().equals(fileOpenDeck)) {
+        else if (e.getSource().equals(fileOpenDeck)) {
             frame.newWindow(CreatorFrame.FILE_OPEN_HERO_DECK, null);
         }
-
-        if (e.getSource().equals(fileSaveDeckAs) || e.getSource().equals(frameSaveDeckAs)) {
+        else if (e.getSource().equals(fileSaveDeckAs) || e.getSource().equals(frameSaveDeckAs)) {
             if (frame.getTabbedPane().getSelectedComponent() instanceof DeckManager) {
                 DeckManager manager = (DeckManager) frame.getTabbedPane().getSelectedComponent();
                 manager.saveDeck();
             }
         }
-
-        if (e.getSource().equals(exportExportCurrentTabJPG)) {
+        else if (e.getSource().equals(exportExportCurrentTabJPG)) {
             frame.exportToJPEG();
         }
-
-        if (e.getSource().equals(exportExportCurrentTabPNG)) {
+        else if (e.getSource().equals(exportExportCurrentTabPNG)) {
             frame.exportToPNG();
         }
-
-        if (e.getSource().equals(fileCloseCurrentTab) || e.getSource().equals(frameCloseCurrentTab)) {
+        else if (e.getSource().equals(fileCloseCurrentTab) || e.getSource().equals(frameCloseCurrentTab)) {
+            if (frame.getTabbedPane().getSelectedComponent() instanceof DeckManager) {
+                Deck d = ((DeckManager)frame.getTabbedPane().getSelectedComponent()).getDeck();
+                if(d.getIsDirty()) {
+                    int option = JOptionPane.showConfirmDialog(this.getFrame(),
+                        "There are unsaved changes, would you like to save your changes first?", 
+                        "Unsaved Changes", 
+                        JOptionPane.YES_NO_CANCEL_OPTION, 
+                        JOptionPane.QUESTION_MESSAGE);
+            
+                    if(option == JOptionPane.YES_OPTION) {
+                        if(!((DeckManager)frame.getTabbedPane().getSelectedComponent()).saveDeck()) {
+                            return;
+                        }
+                    }
+                    else if(option == JOptionPane.CANCEL_OPTION) {
+                        return;
+                    }
+                }
+            }
+            
             frame.closeCurrentFrame();
         }
-
-        if (e.getSource().equals(deckStatistics)) {
-
-        }
-
-        if (e.getSource().equals(deckNewCard) || e.getSource().equals(cardNewCard)) {
+        else if (e.getSource().equals(deckNewCard) || e.getSource().equals(cardNewCard)) {
             if (frame.getTabbedPane().getSelectedComponent() instanceof DeckManager) {
                 DeckManager manager = (DeckManager) frame.getTabbedPane().getSelectedComponent();
                 manager.addCardToDeck();
@@ -311,66 +321,57 @@ public class CreatorMenuBar extends JMenuBar implements ActionListener {
                 manager.editCard();
             }
         }
-
-        if (e.getSource().equals(deckIncreaseNumberInDeck) || e.getSource().equals(cardIncreaseNumberInDeck)) {
+        else if (e.getSource().equals(deckIncreaseNumberInDeck) || e.getSource().equals(cardIncreaseNumberInDeck)) {
             if (frame.getTabbedPane().getSelectedComponent() instanceof DeckManager) {
                 DeckManager manager = (DeckManager) frame.getTabbedPane().getSelectedComponent();
                 manager.increaseNumberInDeck();
             }
         }
-
-        if (e.getSource().equals(deckDecreaseNumberInDeck) || e.getSource().equals(cardDecreaseNumberInDeck)) {
+        else if (e.getSource().equals(deckDecreaseNumberInDeck) || e.getSource().equals(cardDecreaseNumberInDeck)) {
             if (frame.getTabbedPane().getSelectedComponent() instanceof DeckManager) {
                 DeckManager manager = (DeckManager) frame.getTabbedPane().getSelectedComponent();
                 manager.decreaseNumberInDeck();
             }
         }
-
-        if (e.getSource().equals(deckEditCard) || e.getSource().equals(cardEditCard)) {
+        else if (e.getSource().equals(deckEditCard) || e.getSource().equals(cardEditCard)) {
             if (frame.getTabbedPane().getSelectedComponent() instanceof DeckManager) {
                 DeckManager manager = (DeckManager) frame.getTabbedPane().getSelectedComponent();
                 manager.editCard();
             }
         }
-
-        if (e.getSource().equals(deckDeleteCard) || e.getSource().equals(cardDeleteCard)) {
+        else if (e.getSource().equals(deckDeleteCard) || e.getSource().equals(cardDeleteCard)) {
             if (frame.getTabbedPane().getSelectedComponent() instanceof DeckManager) {
                 DeckManager manager = (DeckManager) frame.getTabbedPane().getSelectedComponent();
                 manager.deleteCard();
             }
         }
-
-        if (e.getSource().equals(exportExportDeckIndividuallyPNG)) {
+        else if (e.getSource().equals(exportExportDeckIndividuallyPNG)) {
             if (frame.getTabbedPane().getSelectedComponent() instanceof DeckManager) {
                 DeckManager manager = (DeckManager) frame.getTabbedPane().getSelectedComponent();
                 manager.exportDeckIndividuallyPNG();
             }
         }
-
-        if (e.getSource().equals(exportExportDeckIndividuallyJPG)) {
+        else if (e.getSource().equals(exportExportDeckIndividuallyJPG)) {
             if (frame.getTabbedPane().getSelectedComponent() instanceof DeckManager) {
                 DeckManager manager = (DeckManager) frame.getTabbedPane().getSelectedComponent();
                 manager.exportDeckIndividuallyJPG();
             }
         }
-
-        if (e.getSource().equals(exportExportDeckFullPNG)) {
+        else if (e.getSource().equals(exportExportDeckFullPNG)) {
             if (frame.getTabbedPane().getSelectedComponent() instanceof DeckManager) {
                 DeckManager manager = (DeckManager) frame.getTabbedPane().getSelectedComponent();
                 new DeckPrinter(frame, manager.getDeck()).exportDeckPagesPNG(getExportPath());
                 JOptionPane.showMessageDialog(frame, "Export Complete!");
             }
         }
-
-        if (e.getSource().equals(exportExportDeckFullJPG)) {
+        else if (e.getSource().equals(exportExportDeckFullJPG)) {
             if (frame.getTabbedPane().getSelectedComponent() instanceof DeckManager) {
                 DeckManager manager = (DeckManager) frame.getTabbedPane().getSelectedComponent();
                 new DeckPrinter(frame, manager.getDeck()).exportDeckPagesJPG(getExportPath());
                 JOptionPane.showMessageDialog(frame, "Export Complete!");
             }
         }
-
-        if (e.getSource().equals(exportExportToText)) {
+        else if (e.getSource().equals(exportExportToText)) {
             if (frame.getTabbedPane().getSelectedComponent() instanceof DeckManager) {
                 DeckManager manager = (DeckManager) frame.getTabbedPane().getSelectedComponent();
                 
@@ -384,8 +385,7 @@ public class CreatorMenuBar extends JMenuBar implements ActionListener {
                 }
             }
         }
-
-        if (e.getSource().equals(version)) {
+        else if (e.getSource().equals(version)) {
             JOptionPane.showMessageDialog(frame, GlobalVariables.VERSION, "Version Number", JOptionPane.INFORMATION_MESSAGE);
         }
     }

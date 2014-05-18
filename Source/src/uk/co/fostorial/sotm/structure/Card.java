@@ -1,5 +1,7 @@
 package uk.co.fostorial.sotm.structure;
 
+import java.util.Objects;
+
 public class Card {
     final static int HERO_FRONT = 0;
     final static int HERO_BACK = 1;
@@ -14,14 +16,24 @@ public class Card {
     private int cardType;
     private String classes;
     private String healthPoints;
-    private Integer numberInDeck;
-    private Integer cardID;
+    private int numberInDeck;
+    private int cardID;
     private String portraitFile;
+    private boolean isDirty;
 
     public Card(int cardType, Integer cardID) {
         this.cardType = cardType;
         this.cardID = cardID;
         this.numberInDeck = 0;
+        this.isDirty = false;
+    }
+    
+    public boolean getIsDirty() {
+        return isDirty;
+    }
+    
+    public void setIsDirty(boolean dirty) {
+        isDirty = dirty;
     }
 
     public String getName() {
@@ -29,7 +41,10 @@ public class Card {
     }
 
     public void setName(String name) {
-        this.name = name;
+        if(!Objects.equals(this.name, name)) {
+            this.name = name;
+            setIsDirty(true);
+        }
     }
 
     public int getCardType() {
@@ -37,7 +52,10 @@ public class Card {
     }
 
     public void setCardType(int cardType) {
-        this.cardType = cardType;
+        if(this.cardType != cardType) {
+            this.cardType = cardType;
+            setIsDirty(true);
+        }
     }
 
     public String getCardTypeString() {
@@ -78,7 +96,10 @@ public class Card {
     }
 
     public void setClasses(String classes) {
-        this.classes = classes;
+        if(!Objects.equals(this.classes, classes)) {
+            this.classes = classes;
+            setIsDirty(true);
+        }
     }
 
     public String getHealthPoints() {
@@ -99,23 +120,32 @@ public class Card {
     }
 
     public void setHealthPoints(String healthPoints) {
-        this.healthPoints = healthPoints;
+        if(!Objects.equals(this.healthPoints, healthPoints)) {
+            this.healthPoints = healthPoints;
+            setIsDirty(true);
+        }
     }
 
     public Integer getNumberInDeck() {
         return numberInDeck;
     }
 
-    public void setNumberInDeck(Integer numberInDeck) {
-        this.numberInDeck = numberInDeck;
+    public void setNumberInDeck(int numberInDeck) {
+        if(this.numberInDeck != numberInDeck) {
+            this.numberInDeck = numberInDeck;
+            setIsDirty(true);
+        }
     }
 
     public Integer getCardID() {
         return cardID;
     }
 
-    public void setCardID(Integer cardID) {
-        this.cardID = cardID;
+    public void setCardID(int cardID) {
+        if(this.cardID != cardID) {
+            this.cardID = cardID;
+            setIsDirty(true);
+        }
     }
 
     public String getXML() {
@@ -130,6 +160,9 @@ public class Card {
     }
 
     public void setPortraitFile(String portraitFile) {
-        this.portraitFile = portraitFile;
+        if(!Objects.equals(this.portraitFile, portraitFile)) {
+            this.portraitFile = portraitFile;
+            setIsDirty(true);
+        }
     }
 }

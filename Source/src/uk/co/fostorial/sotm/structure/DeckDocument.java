@@ -125,6 +125,8 @@ public class DeckDocument {
                 card.setPowerFont(findFontElement(el, "powerfont"));
             }
 
+            card.setIsDirty(false);
+            
             cards.add(card);
         }
         
@@ -158,6 +160,8 @@ public class DeckDocument {
             if (findFontElement(el, "textfont") != null) {
                 card.setTextFont(findFontElement(el, "textfont"));
             }
+            
+            card.setIsDirty(false);
 
             cards.add(card);
         }
@@ -215,6 +219,8 @@ public class DeckDocument {
                 card.setDescriptionFont(findFontElement(el, "descriptionfont"));
             }
 
+            card.setIsDirty(false);
+            
             cards.add(card);
         }
         
@@ -233,6 +239,7 @@ public class DeckDocument {
             card.setHealthPoints(findElement(el, "healthpoints"));
             card.setPortraitFile(findElement(el, "portrait"));
             card.setNumberInDeck(new Integer(findElement(el, "numberindeck")));
+            card.setIsDirty(false);
             cards.add(card);
         }
         
@@ -299,6 +306,8 @@ public class DeckDocument {
             if (findFontElement(el, "quotefont") != null) {
                 card.setQuoteFont(findFontElement(el, "quotefont"));
             }
+            
+            card.setIsDirty(false);
 
             cards.add(card);
         }
@@ -366,6 +375,8 @@ public class DeckDocument {
             if (findFontElement(el, "quotefont") != null) {
                 card.setQuoteFont(findFontElement(el, "quotefont"));
             }
+            
+            card.setIsDirty(false);
 
             cards.add(card);
         }
@@ -435,6 +446,8 @@ public class DeckDocument {
                 card.setQuoteFont(findFontElement(el, "quotefont"));
             }
 
+            card.setIsDirty(false);
+            
             cards.add(card);
         }
         
@@ -449,8 +462,6 @@ public class DeckDocument {
         }
         return val;
     }
-
-
 
     private Font findFontElement(Element el, String attr) {
         String val = "";

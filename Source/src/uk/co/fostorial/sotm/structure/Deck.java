@@ -1,17 +1,8 @@
 package uk.co.fostorial.sotm.structure;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import javax.swing.JFileChooser;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
 public class Deck {
     private String name;
@@ -88,6 +79,14 @@ public class Deck {
     public Integer getNextIDInteger() {
         nextID++;
         return nextID;
+    }
+    
+    public boolean getIsDirty() {
+        return cards.stream().anyMatch((c) -> (c.getIsDirty()));
+    }
+    
+    public void setIsDirty(boolean dirty) {
+        cards.stream().forEach((c) -> c.setIsDirty(dirty));
     }
 
     public String getXML() {

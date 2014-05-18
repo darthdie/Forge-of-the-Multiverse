@@ -1,6 +1,7 @@
 package uk.co.fostorial.sotm;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.Window;
 import java.awt.event.MouseAdapter;
@@ -10,6 +11,7 @@ import java.lang.reflect.Method;
 import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeEvent;
@@ -66,7 +68,7 @@ public class CreatorFrame extends JFrame implements ChangeListener, WindowListen
 
     private void setupFrame() {
         addWindowListener(this);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         this.setSize(500, 500);
         this.setTitle("Forge of the Multiverse");
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -278,6 +280,7 @@ public class CreatorFrame extends JFrame implements ChangeListener, WindowListen
                 return new FileNameExtensionFilter("Image files", ImageIO.getReaderFileSuffixes());
             case Text:
                 return new FileNameExtensionFilter("Text Files (*.txt)", ".txt");
+            case Deck:
             case XML:
                 return new FileNameExtensionFilter("XML Files (*.xml)", ".xml");
             case JPG:
@@ -285,7 +288,7 @@ public class CreatorFrame extends JFrame implements ChangeListener, WindowListen
             case PNG:
                 return new FileNameExtensionFilter("PNG Files (*.png)", ".png");
             default:
-                return new FileNameExtensionFilter("All");
+                return new FileNameExtensionFilter("All", ".*");
         }
     }
 
@@ -301,63 +304,79 @@ public class CreatorFrame extends JFrame implements ChangeListener, WindowListen
     }
 
     @Override
-    public void windowOpened(java.awt.event.WindowEvent e) {
-
-    }
-
-    @Override
     public void windowClosing(java.awt.event.WindowEvent e) {
         ApplicationPreferences.setLastPath(chooser.getSelectedFile());
+        
+        if(hasUnsavedChanges()) {
+            int option = JOptionPane.showConfirmDialog(this,
+                    "There are unsaved changes, would you like to save before quiting?", 
+                    "Unsaved Changes", 
+                    JOptionPane.YES_NO_CANCEL_OPTION, 
+                    JOptionPane.QUESTION_MESSAGE);
+            
+            if(option == JOptionPane.YES_OPTION) {
+                if(!saveChanges()) {
+                    return;
+                }
+            }
+            else if(option == JOptionPane.CANCEL_OPTION) {
+                return;
+            }
+        }
+        
+        System.exit(0);
+    }
+    
+    private boolean hasUnsavedChanges() {
+        for(int i = 0; i < tabbedPane.getComponentCount(); i++) {
+            Component c = tabbedPane.getComponent(i);
+            if(c instanceof DeckManager) {
+                if(((DeckManager)c).getDeck().getIsDirty()) {
+                    return true;
+                }
+            }
+        }
+        
+        return false;
+    }
+    
+    private boolean saveChanges() {
+       for(int i = 0; i < tabbedPane.getComponentCount(); i++) {
+            Component c = tabbedPane.getComponent(i);
+            if(c instanceof DeckManager) {
+                DeckManager d = (DeckManager)c;
+                if(d.getDeck().getIsDirty()) {
+                    if(!d.saveDeck()) {
+                        return false;
+                    }
+                }
+            }
+        }
+       
+       return true;
     }
 
     @Override
+    public void windowOpened(java.awt.event.WindowEvent e) {
+    }
+    
+    @Override
     public void windowClosed(java.awt.event.WindowEvent e) {
-
     }
 
     @Override
     public void windowIconified(java.awt.event.WindowEvent e) {
-
     }
 
     @Override
     public void windowDeiconified(java.awt.event.WindowEvent e) {
-
     }
 
     @Override
     public void windowActivated(java.awt.event.WindowEvent e) {
-
     }
 
     @Override
     public void windowDeactivated(java.awt.event.WindowEvent e) {
-
-    }
-
-    public class FrameMouseAdapter extends MouseAdapter {
-        private final CreatorFrame frame;
-
-        public FrameMouseAdapter(CreatorFrame frame) {
-            this.frame = frame;
-        }
-
-        @Override
-        public void mousePressed(MouseEvent e) {
-            if (e.isPopupTrigger()) {
-                doPop(e);
-            }
-        }
-
-        @Override
-        public void mouseReleased(MouseEvent e) {
-            if (e.isPopupTrigger() && frame.getTabbedPane().getTabCount() > 0) {
-                doPop(e);
-            }
-        }
-
-        private void doPop(MouseEvent e) {
-            frame.getCreatorMenuBar().getFrameMenu().show(e.getComponent(), e.getX(), e.getY());
-        }
     }
 }

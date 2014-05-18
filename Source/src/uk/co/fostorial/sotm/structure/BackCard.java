@@ -9,6 +9,7 @@ public class BackCard extends Card {
         setClasses("N/A");
         setHealthPoints("N/A");
         setPortraitFile("images" + File.separator + "cardback" + File.separator + "portrait.png");
+        setIsDirty(false);
     }
 
     @Override
