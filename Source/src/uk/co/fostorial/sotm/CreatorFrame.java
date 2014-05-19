@@ -35,7 +35,6 @@ import uk.co.fostorial.sotm.structure.VillainCard;
 import uk.co.fostorial.sotm.structure.VillainFrontCard;
 
 public class CreatorFrame extends JFrame implements ChangeListener, WindowListener {
-
     private static final long serialVersionUID = 8105592648557148065L;
 
     final static public int FILE_NEW_HERO_FRONT = 1;
@@ -272,6 +271,8 @@ public class CreatorFrame extends JFrame implements ChangeListener, WindowListen
             if (c instanceof DeckManager) {
                 DeckManager d = (DeckManager) c;
                 if (d.getDeck().getIsDirty()) {
+                    tabbedPane.setSelectedIndex(i);
+                    
                     if (!d.saveDeck()) {
                         return false;
                     }
@@ -305,5 +306,4 @@ public class CreatorFrame extends JFrame implements ChangeListener, WindowListen
     @Override
     public void windowDeactivated(java.awt.event.WindowEvent e) {
     }
-
 }

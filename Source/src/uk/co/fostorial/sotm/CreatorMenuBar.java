@@ -90,7 +90,7 @@ public final class CreatorMenuBar extends JMenuBar implements ActionListener {
         fileNewEnvironmentDeck.setAccelerator(key);
         file.add(fileNewEnvironmentDeck);
 
-        fileOpenDeck = new JMenuItem("Open Deck...", new ImageIcon("Images/Icons/arrow_right.png"));
+        fileOpenDeck = new JMenuItem("Open Deck...", new ImageIcon("Images/Icons/folder_page.png"));
         fileOpenDeck.addActionListener(this);
         key = KeyStroke.getKeyStroke(
                 KeyEvent.VK_O, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask());
@@ -113,49 +113,49 @@ public final class CreatorMenuBar extends JMenuBar implements ActionListener {
 
         export = new JMenu("Export");
 
-        exportExportCurrentTabJPG = new JMenuItem("Export to JPEG");
+        exportExportCurrentTabJPG = new JMenuItem("Export to JPEG", new ImageIcon("Images/Icons/picture.png"));
         exportExportCurrentTabJPG.addActionListener(this);
         key = KeyStroke.getKeyStroke(
                 KeyEvent.VK_J, KeyEvent.CTRL_DOWN_MASK);
         exportExportCurrentTabJPG.setAccelerator(key);
         export.add(exportExportCurrentTabJPG);
 
-        exportExportCurrentTabPNG = new JMenuItem("Export to PNG");
+        exportExportCurrentTabPNG = new JMenuItem("Export to PNG", new ImageIcon("Images/Icons/picture.png"));
         exportExportCurrentTabPNG.addActionListener(this);
         key = KeyStroke.getKeyStroke(
                 KeyEvent.VK_P, KeyEvent.CTRL_DOWN_MASK);
         exportExportCurrentTabPNG.setAccelerator(key);
         export.add(exportExportCurrentTabPNG);
 
-        exportExportDeckIndividuallyPNG = new JMenuItem("Export Cards to PNG");
+        exportExportDeckIndividuallyPNG = new JMenuItem("Export Cards to PNG", new ImageIcon("Images/Icons/pictures.png"));
         exportExportDeckIndividuallyPNG.addActionListener(this);
         key = KeyStroke.getKeyStroke(
                 KeyEvent.VK_J, KeyEvent.CTRL_DOWN_MASK);
         //exportExportDeckIndividuallyPNG.setAccelerator(key);
         export.add(exportExportDeckIndividuallyPNG);
 
-        exportExportDeckIndividuallyJPG = new JMenuItem("Export Cards to JPG");
+        exportExportDeckIndividuallyJPG = new JMenuItem("Export Cards to JPG", new ImageIcon("Images/Icons/pictures.png"));
         exportExportDeckIndividuallyJPG.addActionListener(this);
         key = KeyStroke.getKeyStroke(
                 KeyEvent.VK_J, KeyEvent.CTRL_DOWN_MASK);
         //exportExportDeckIndividuallyPNG.setAccelerator(key);
         export.add(exportExportDeckIndividuallyJPG);
 
-        exportExportDeckFullPNG = new JMenuItem("Export Deck to PNG");
+        exportExportDeckFullPNG = new JMenuItem("Export Deck to PNG", new ImageIcon("Images/Icons/picture.png"));
         exportExportDeckFullPNG.addActionListener(this);
         key = KeyStroke.getKeyStroke(
                 KeyEvent.VK_J, KeyEvent.CTRL_DOWN_MASK);
         //exportExportDeckIndividuallyPNG.setAccelerator(key);
         export.add(exportExportDeckFullPNG);
 
-        exportExportDeckFullJPG = new JMenuItem("Export Deck to JPG");
+        exportExportDeckFullJPG = new JMenuItem("Export Deck to JPG", new ImageIcon("Images/Icons/picture.png"));
         exportExportDeckFullJPG.addActionListener(this);
         key = KeyStroke.getKeyStroke(
                 KeyEvent.VK_J, KeyEvent.CTRL_DOWN_MASK);
         //exportExportDeckIndividuallyPNG.setAccelerator(key);
         export.add(exportExportDeckFullJPG);
 
-        exportExportToText = new JMenuItem("Export Deck to Text");
+        exportExportToText = new JMenuItem("Export Deck to Text", new ImageIcon("Images/Icons/page_white_text.png"));
         exportExportToText.addActionListener(this);
         key = KeyStroke.getKeyStroke(
                 KeyEvent.VK_J, KeyEvent.CTRL_DOWN_MASK);
@@ -177,21 +177,21 @@ public final class CreatorMenuBar extends JMenuBar implements ActionListener {
 
         deck = new JMenu("Deck");
 
-        deckNewCard = new JMenuItem("Add New Card");
+        deckNewCard = new JMenuItem("Add New Card", new ImageIcon("Images/Icons/page_add.png"));
         deckNewCard.addActionListener(this);
         key = KeyStroke.getKeyStroke(
                 KeyEvent.VK_N, KeyEvent.CTRL_DOWN_MASK);
         deckNewCard.setAccelerator(key);
         deck.add(deckNewCard);
 
-        deckEditCard = new JMenuItem("Edit Card");
+        deckEditCard = new JMenuItem("Edit Card", new ImageIcon("Images/Icons/page_edit.png"));
         deckEditCard.addActionListener(this);
         key = KeyStroke.getKeyStroke(
                 KeyEvent.VK_E, KeyEvent.CTRL_DOWN_MASK);
         deckEditCard.setAccelerator(key);
         deck.add(deckEditCard);
 
-        deckDeleteCard = new JMenuItem("Delete Card");
+        deckDeleteCard = new JMenuItem("Delete Card", new ImageIcon("Images/Icons/page_delete.png"));
         deckDeleteCard.addActionListener(this);
         key = KeyStroke.getKeyStroke(
                 KeyEvent.VK_D, KeyEvent.CTRL_DOWN_MASK);
@@ -200,14 +200,14 @@ public final class CreatorMenuBar extends JMenuBar implements ActionListener {
 
         deck.addSeparator();
 
-        deckIncreaseNumberInDeck = new JMenuItem("Increase Number in Deck");
+        deckIncreaseNumberInDeck = new JMenuItem("Increase Number in Deck", new ImageIcon("Images/Icons/arrow_up.png"));
         deckIncreaseNumberInDeck.addActionListener(this);
         key = KeyStroke.getKeyStroke(
                 KeyEvent.VK_M, KeyEvent.CTRL_DOWN_MASK);
         deckIncreaseNumberInDeck.setAccelerator(key);
         deck.add(deckIncreaseNumberInDeck);
 
-        deckDecreaseNumberInDeck = new JMenuItem("Decrease Number in Deck");
+        deckDecreaseNumberInDeck = new JMenuItem("Decrease Number in Deck", new ImageIcon("Images/Icons/arrow_down.png"));
         deckDecreaseNumberInDeck.addActionListener(this);
         key = KeyStroke.getKeyStroke(
                 KeyEvent.VK_L, KeyEvent.CTRL_DOWN_MASK);
@@ -226,22 +226,22 @@ public final class CreatorMenuBar extends JMenuBar implements ActionListener {
 
         help = new JMenu("Help");
 
-        version = new JMenuItem("Version Information");
+        version = new JMenuItem("Version Information", new ImageIcon("Images/Icons/information.png"));
         version.addActionListener(this);
         help.add(version);
 
         this.add(help);
 
         cardMenu = new JPopupMenu();
-        cardNewCard = new JMenuItem("Add New Card");
+        cardNewCard = new JMenuItem("Add New Card", new ImageIcon("Images/Icons/page_add.png"));
         cardNewCard.addActionListener(this);
-        cardEditCard = new JMenuItem("Edit Card");
+        cardEditCard = new JMenuItem("Edit Card", new ImageIcon("Images/Icons/page_edit.png"));
         cardEditCard.addActionListener(this);
-        cardDeleteCard = new JMenuItem("Delete Card");
+        cardDeleteCard = new JMenuItem("Delete Card", new ImageIcon("Images/Icons/page_delete.png"));
         cardDeleteCard.addActionListener(this);
-        cardIncreaseNumberInDeck = new JMenuItem("Increase Number in Deck");
+        cardIncreaseNumberInDeck = new JMenuItem("Increase Number in Deck", new ImageIcon("Images/Icons/arrow_up.png"));
         cardIncreaseNumberInDeck.addActionListener(this);
-        cardDecreaseNumberInDeck = new JMenuItem("Decrease Number in Deck");
+        cardDecreaseNumberInDeck = new JMenuItem("Decrease Number in Deck", new ImageIcon("Images/Icons/arrow_down.png"));
         cardDecreaseNumberInDeck.addActionListener(this);
         cardMenu.add(cardNewCard);
         cardMenu.add(cardEditCard);
