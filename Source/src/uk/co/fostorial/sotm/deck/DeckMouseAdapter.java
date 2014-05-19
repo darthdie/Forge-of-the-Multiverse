@@ -40,6 +40,11 @@ public class DeckMouseAdapter extends MouseAdapter {
     @Override
     public void mouseReleased(MouseEvent e) {
         if (e.isPopupTrigger()) {
+            JTable table = (JTable) e.getSource();
+            Point p = e.getPoint();
+            int row = table.rowAtPoint(p);
+            table.getSelectionModel().setSelectionInterval(row, row);
+            
             doPop(e);
         }
     }
