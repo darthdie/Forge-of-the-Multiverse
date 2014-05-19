@@ -1,6 +1,7 @@
 package uk.co.fostorial.sotm.deck;
 
-import java.awt.Component;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -14,6 +15,9 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document.OutputSettings;
+import org.jsoup.safety.Whitelist;
 import uk.co.fostorial.sotm.CreatorFrame;
 import uk.co.fostorial.sotm.design.CreatorTab;
 import uk.co.fostorial.sotm.design.CreatorTabCardBack;
@@ -36,7 +40,7 @@ import uk.co.fostorial.sotm.structure.VillainCard;
 import uk.co.fostorial.sotm.structure.VillainDeck;
 import uk.co.fostorial.sotm.structure.VillainFrontCard;
 
-public final class DeckManager extends JSplitPane implements ListSelectionListener {
+public final class DeckManager extends JSplitPane implements PropertyChangeListener, ListSelectionListener {
     private static final long serialVersionUID = 7972443091809248703L;
 
     public final static int VILLAIN_MODE = 0;
@@ -57,10 +61,10 @@ public final class DeckManager extends JSplitPane implements ListSelectionListen
     private final CreatorFrame frame;
     private CreatorTab creator;
 
-    public String getDeckName() {
-        return deck.getName();
+    public String getDeckDisplayName() {
+        return deck.getDisplayName();
     }
-
+    
     public CreatorTab getCreator() {
         return creator;
     }
@@ -71,10 +75,6 @@ public final class DeckManager extends JSplitPane implements ListSelectionListen
 
     public Deck getDeck() {
         return deck;
-    }
-
-    public void setDeck(Deck deck) {
-        this.deck = deck;
     }
 
     public int getDeckMode() {
@@ -105,10 +105,12 @@ public final class DeckManager extends JSplitPane implements ListSelectionListen
         this.setDeckMode(deckMode);
         this.deck = deck;
         this.frame = frame;
-
+        
         if (deck == null) {
             newDeck();
         }
+        
+        this.deck.addPropertyChangeListener(this);
 
         setup();
     }
@@ -319,7 +321,8 @@ public final class DeckManager extends JSplitPane implements ListSelectionListen
 
             File f = new File(filePath);
             try (FileWriter fstream = new FileWriter(f); BufferedWriter out = new BufferedWriter(fstream)) {
-                out.write(deck.getXML());
+                String xml = deck.getXML();
+                out.write(xml);
             }
             
             String name = f.getName().replace(".xml", "");
@@ -396,5 +399,19 @@ public final class DeckManager extends JSplitPane implements ListSelectionListen
         }
 
         JOptionPane.showMessageDialog(frame, "Export Complete!");
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent e) {
+        if(e.getPropertyName().toLowerCase().equals("displayname")) {
+            for(int i = 0; i < frame.getTabbedPane().getTabCount(); i++) {
+                if(frame.getTabbedPane().getComponentAt(i).equals(this)) {
+                    frame.getTabbedPane().setTitleAt(i, (String)e.getNewValue());
+                    break;
+                }
+            }
+            
+            //frame.getTabbedPane().setTitleAt(index, (String)e.getNewValue());
+        }
     }
 }

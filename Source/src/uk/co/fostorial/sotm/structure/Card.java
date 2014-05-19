@@ -1,5 +1,7 @@
 package uk.co.fostorial.sotm.structure;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.Objects;
 
 public class Card {
@@ -20,6 +22,8 @@ public class Card {
     private int cardID;
     private String portraitFile;
     private boolean isDirty;
+    
+    private final PropertyChangeSupport changes = new PropertyChangeSupport(this);
 
     public Card(int cardType, Integer cardID) {
         this.cardType = cardType;
@@ -33,7 +37,11 @@ public class Card {
     }
     
     public void setIsDirty(boolean dirty) {
-        isDirty = dirty;
+        if(isDirty != dirty) {
+            boolean oldValue = isDirty;
+            isDirty = dirty;
+            changes.firePropertyChange("isDirty", oldValue, dirty);
+        }
     }
 
     public String getName() {
@@ -164,5 +172,13 @@ public class Card {
             this.portraitFile = portraitFile;
             setIsDirty(true);
         }
+    }
+    
+    public void addPropertyChangeListener(PropertyChangeListener l) {
+        changes.addPropertyChangeListener(l);
+    }
+
+    public void removePropertyChangeListener(PropertyChangeListener l) {
+        changes.removePropertyChangeListener(l);
     }
 }

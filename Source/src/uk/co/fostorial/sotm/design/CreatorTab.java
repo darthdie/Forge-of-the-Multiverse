@@ -221,8 +221,7 @@ public class CreatorTab extends JSplitPane {
     }
 
     public class MultilinePropertiesDocumentListener implements DocumentListener {
-
-        private JLabel label;
+        private final JLabel label;
 
         public MultilinePropertiesDocumentListener(JLabel label) {
             this.label = label;
@@ -232,7 +231,7 @@ public class CreatorTab extends JSplitPane {
         public void changedUpdate(DocumentEvent e) {
             try {
                 String txt = e.getDocument().getText(0, e.getDocument().getLength());
-                txt.replace("\n", "<br>");
+                txt = txt.replace("\n", "<br>");
                 label.setText("<html>" + txt + "</html>");
             } catch (Exception ex) {
                 label.setText("ERROR!");
@@ -245,7 +244,7 @@ public class CreatorTab extends JSplitPane {
                 String newline = System.getProperty("line.separator");
                 String txt = e.getDocument().getText(0, e.getDocument().getLength());
                 //String txt = e.getDocument().getProperty(key);
-                txt.replace(newline, "|");
+                txt = txt.replace(newline, "|");
                 label.setText("<html>" + txt + "</html>");
             } catch (Exception ex) {
                 label.setText("ERROR!");
@@ -256,7 +255,7 @@ public class CreatorTab extends JSplitPane {
         public void removeUpdate(DocumentEvent e) {
             try {
                 String txt = e.getDocument().getText(0, e.getDocument().getLength());
-                txt.replace("\n", "<br>");
+                txt = txt.replace("\n", "<br>");
                 label.setText("<html>" + txt + "</html>");
                 //label.setText(e.getDocument().getText(0, e.getDocument().getLength()));
             } catch (Exception ex) {
@@ -267,8 +266,7 @@ public class CreatorTab extends JSplitPane {
     }
 
     public class TextareaPropertiesDocumentListener implements DocumentListener {
-
-        private JTextArea label;
+        private final JTextArea label;
 
         public TextareaPropertiesDocumentListener(JTextArea label) {
             this.label = label;
@@ -300,7 +298,6 @@ public class CreatorTab extends JSplitPane {
                 label.setText("ERROR!");
             }
         }
-
     }
 
     public Image getScaledImage(Image srcImg, int w, int h) {

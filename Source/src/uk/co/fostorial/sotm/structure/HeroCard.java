@@ -81,7 +81,7 @@ public class HeroCard extends Card {
         xml += "  <healthpointsimage>" + getHealthPointsImage() + "</healthpointsimage>\n";
         xml += "  <portrait>" + getPortraitFile() + "</portrait>\n";
         xml += "  <numberindeck>" + getNumberInDeck() + "</numberindeck>\n";
-        xml += "  <cardtext>" + getCardText() + "</cardtext>\n";
+        xml += "  <cardtext>" + getCardText().replace("\r", "<br>") + "</cardtext>\n";
         xml += "  <quotestring1>" + getQuoteString1() + "</quotestring1>\n";
         xml += "  <quotestring2>" + getQuoteString2() + "</quotestring2>\n";
         xml += "  <issuestring>" + getIssueString() + "</issuestring>\n";

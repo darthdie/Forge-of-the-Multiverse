@@ -1,17 +1,24 @@
 package uk.co.fostorial.sotm.structure;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
-public class Deck {
+public class Deck implements PropertyChangeListener {
     private String name;
     private List<Card> cards = new ArrayList<>();
 
     private int nextID = 0;
     private final DeckType type;
+    
+    private final PropertyChangeSupport changes;
 
     public Deck(DeckType deckType, String name) {
+        this.changes = new PropertyChangeSupport(this);
         this.type = deckType;
         this.name = name;
     }
@@ -23,6 +30,10 @@ public class Deck {
     public void setCards(List<Card> cards) {
         this.cards = cards;
         setNextID(findHighestID(cards));
+        
+        for(Card c : cards) {
+            c.addPropertyChangeListener(this);
+        }
     }
     
     private int findHighestID(List<Card> cards) {
@@ -41,7 +52,29 @@ public class Deck {
     }
 
     public void setName(String name) {
-        this.name = name;
+        if(!Objects.equals(this.name, name)) {
+            String oldValue = this.name;
+            this.name = name;
+
+            changes.firePropertyChange("name", oldValue, name);
+            changes.firePropertyChange("displayName", "", getDisplayName());
+        }
+    }
+    
+    public String getDisplayName() {
+        if(getIsDirty()) {
+            return getName() + "*";
+        }
+        
+        return getName();
+    }
+    
+    public boolean getIsDirty() {
+        return cards.stream().anyMatch((c) -> (c.getIsDirty()));
+    }
+    
+    public void setIsDirty(boolean dirty) {
+        cards.stream().forEach((c) -> c.setIsDirty(dirty));
     }
     
     public DeckType getType() {
@@ -60,11 +93,14 @@ public class Deck {
             // TODO validation error
         }
 
+        card.addPropertyChangeListener(this);
+        
         card.setNumberInDeck(1);
         cards.add(card);
     }
 
     public void removeCard(Card card) {
+        card.removePropertyChangeListener(this);
         cards.remove(card);
     }
 
@@ -79,14 +115,6 @@ public class Deck {
     public Integer getNextIDInteger() {
         nextID++;
         return nextID;
-    }
-    
-    public boolean getIsDirty() {
-        return cards.stream().anyMatch((c) -> (c.getIsDirty()));
-    }
-    
-    public void setIsDirty(boolean dirty) {
-        cards.stream().forEach((c) -> c.setIsDirty(dirty));
     }
 
     public String getXML() {
@@ -224,6 +252,22 @@ public class Deck {
 
         return stats;
     }
+    
+    public void addPropertyChangeListener(PropertyChangeListener l) {
+        changes.addPropertyChangeListener(l);
+    }
+
+    public void removePropertyChangeListener(PropertyChangeListener l) {
+        changes.removePropertyChangeListener(l);
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        if(evt.getPropertyName().equalsIgnoreCase("isDirty")) {
+            changes.firePropertyChange("displayName", "", getDisplayName());
+        } 
+    }
+
     
     public enum DeckType {
         Hero,
