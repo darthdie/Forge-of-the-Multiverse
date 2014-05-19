@@ -18,6 +18,7 @@ import java.util.List;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.nodes.TextNode;
 import org.jsoup.select.Elements;
 
 /**
@@ -458,11 +459,18 @@ public class DeckDocument {
         String val = "";
         Elements subels = el.getElementsByTag(attr);
         for (Element sel : subels) {
-            val = sel.text();
+            List<TextNode> nodes = sel.textNodes();
+            if(nodes == null || nodes.isEmpty()) {
+                val = sel.text();
+            } 
+            else {
+                val = nodes.get(0).getWholeText();
+            }
         }
+        
         return val;
     }
-
+    
     private Font findFontElement(Element el, String attr) {
         String val = "";
         Elements subels = el.getElementsByTag(attr);
