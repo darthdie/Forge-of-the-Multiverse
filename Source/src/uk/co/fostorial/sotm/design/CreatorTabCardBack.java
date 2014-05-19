@@ -6,12 +6,11 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-
 import uk.co.fostorial.sotm.CreatorFrame;
+import uk.co.fostorial.sotm.DialogFileType;
 import uk.co.fostorial.sotm.LoadFileDialog;
 import uk.co.fostorial.sotm.structure.BackCard;
 

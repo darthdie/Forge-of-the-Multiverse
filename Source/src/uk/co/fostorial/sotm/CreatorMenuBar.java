@@ -4,6 +4,7 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import javax.swing.ImageIcon;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -68,35 +69,35 @@ public final class CreatorMenuBar extends JMenuBar implements ActionListener {
     private void setup() {
         file = new JMenu("File");
 
-        fileNewHeroDeck = new JMenuItem("New Hero Deck");
+        fileNewHeroDeck = new JMenuItem("New Hero Deck", new ImageIcon("Images/Icons/user.png"));
         fileNewHeroDeck.addActionListener(this);
         KeyStroke key = KeyStroke.getKeyStroke(
                 KeyEvent.VK_H, KeyEvent.ALT_DOWN_MASK);
         fileNewHeroDeck.setAccelerator(key);
         file.add(fileNewHeroDeck);
 
-        fileNewVillainDeck = new JMenuItem("New Villain Deck");
+        fileNewVillainDeck = new JMenuItem("New Villain Deck", new ImageIcon("Images/Icons/user_gray.png"));
         fileNewVillainDeck.addActionListener(this);
         key = KeyStroke.getKeyStroke(
                 KeyEvent.VK_V, KeyEvent.ALT_DOWN_MASK);
         fileNewVillainDeck.setAccelerator(key);
         file.add(fileNewVillainDeck);
 
-        fileNewEnvironmentDeck = new JMenuItem("New Environment Deck");
+        fileNewEnvironmentDeck = new JMenuItem("New Environment Deck", new ImageIcon("Images/Icons/world.png"));
         fileNewEnvironmentDeck.addActionListener(this);
         key = KeyStroke.getKeyStroke(
                 KeyEvent.VK_E, KeyEvent.ALT_DOWN_MASK);
         fileNewEnvironmentDeck.setAccelerator(key);
         file.add(fileNewEnvironmentDeck);
 
-        fileOpenDeck = new JMenuItem("Open Deck...");
+        fileOpenDeck = new JMenuItem("Open Deck...", new ImageIcon("Images/Icons/arrow_right.png"));
         fileOpenDeck.addActionListener(this);
         key = KeyStroke.getKeyStroke(
                 KeyEvent.VK_O, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask());
         fileOpenDeck.setAccelerator(key);
         file.add(fileOpenDeck);
 
-        fileSaveDeckAs = new JMenuItem("Save Deck As...");
+        fileSaveDeckAs = new JMenuItem("Save Deck As...", new ImageIcon("Images/Icons/disk.png"));
         fileSaveDeckAs.addActionListener(this);
         key = KeyStroke.getKeyStroke(
                 KeyEvent.VK_S, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask());
@@ -165,7 +166,7 @@ public final class CreatorMenuBar extends JMenuBar implements ActionListener {
 
         file.addSeparator();
 
-        fileExit = new JMenuItem("Exit");
+        fileExit = new JMenuItem("Exit", new ImageIcon("Images/Icons/exclamation.png"));
         fileExit.addActionListener(this);
         key = KeyStroke.getKeyStroke(
                 KeyEvent.VK_X, KeyEvent.CTRL_DOWN_MASK);
