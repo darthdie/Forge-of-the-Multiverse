@@ -20,11 +20,19 @@ public class ApplicationPreferences {
         return new File(prefs.get("lastPath", "."));
     }
     
-    public static void setLastPath(File path) {
-        if(path == null) {
+    public static void setLastPath(File file) {
+        if(file == null) {
             return;
         }
         
-        prefs.put("lastPath", path.getAbsolutePath());
+        String path;
+        if(file.isFile()) {
+            path = file.getParent();
+        }
+        else {
+            path = file.getAbsolutePath();
+        }
+        
+        prefs.put("lastPath", path);
     }
 }

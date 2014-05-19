@@ -21,7 +21,6 @@ import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class SaveFileDialog {
-
     public static Map<String, String[]> filterForType(DialogFileType type) {
         Map<String, String[]> filter = new HashMap<>();
         switch (type) {
@@ -48,6 +47,7 @@ public class SaveFileDialog {
         
         return filter;
     }
+    
     private final JFileChooser chooser;
 
     private boolean addExtension;
@@ -67,7 +67,7 @@ public class SaveFileDialog {
                     return;
                 }
 
-                File f = getSelectedFile();
+                File f = new File(buildFormattedSelectedPath());
                 if (f.exists()) {
                     int result = JOptionPane.showConfirmDialog(this, "The file exists, overwrite?", "Existing file", JOptionPane.YES_NO_CANCEL_OPTION);
                     switch (result) {
@@ -83,6 +83,7 @@ public class SaveFileDialog {
                             return;
                     }
                 }
+                
                 super.approveSelection();
             }
         };
@@ -161,17 +162,25 @@ public class SaveFileDialog {
             return false;
         }
 
+        selectedPath = buildFormattedSelectedPath();
+        
+        ApplicationPreferences.setLastPath(new File(selectedPath));
+
+        return true;
+    }
+    
+    private String buildFormattedSelectedPath() {
         selectedPath = chooser.getSelectedFile().getAbsolutePath();
 
+        FileFilter[] filters = chooser.getChoosableFileFilters();
+        
         if (addExtension
                 && getExtension(chooser.getSelectedFile()).isEmpty()
                 && filters.length > 0) {
             selectedPath = selectedPath + "." + ((FileNameExtensionFilter) filters[0]).getExtensions()[0];
         }
         
-        ApplicationPreferences.setLastPath(chooser.getSelectedFile());
-
-        return true;
+        return selectedPath;
     }
 
     private FileNameExtensionFilter extensionFilterFrom(Map.Entry entry) {
