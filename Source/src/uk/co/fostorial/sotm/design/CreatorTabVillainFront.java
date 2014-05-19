@@ -7,19 +7,18 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JColorChooser;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
-
 import uk.co.fostorial.sotm.CreatorFrame;
+import uk.co.fostorial.sotm.DialogFileType;
+import uk.co.fostorial.sotm.LoadFileDialog;
 import uk.co.fostorial.sotm.structure.VillainFrontCard;
 
 public class CreatorTabVillainFront extends CreatorTab implements ActionListener {
-
     private static final long serialVersionUID = -5912094058209400572L;
 
     private JLabel cardborder;
@@ -306,12 +305,12 @@ public class CreatorTabVillainFront extends CreatorTab implements ActionListener
             }
         }
         else if (e.getSource().equals(portraitButton)) {
-            String filePath = getFrame().browseForLoadPath(CreatorFrame.BrowserFileType.Image);
-            if(filePath.equals("")) {
+            LoadFileDialog d = new LoadFileDialog(LoadFileDialog.filterForType(DialogFileType.Image));
+            if(!d.showDialog(getFrame())) {
                 return;
             }
             
-            portraitLocation = filePath;
+            portraitLocation = d.getSelectedPath();
             ImageIcon ii = new ImageIcon(portraitLocation);
             Image image = getScaledImage(ii.getImage(), (int) getImagePane().getPreferredSize().getWidth(), (int) getImagePane().getPreferredSize().getHeight());
             ii = new ImageIcon(image);
@@ -319,12 +318,12 @@ public class CreatorTabVillainFront extends CreatorTab implements ActionListener
             portrait.setBounds(0, 0, (int) getImagePane().getPreferredSize().getWidth(), (int) getImagePane().getPreferredSize().getHeight());
         }
         else if (e.getSource().equals(nemesisButton)) {
-            String filePath = getFrame().browseForLoadPath(CreatorFrame.BrowserFileType.Image);
-            if(filePath.equals("")) {
+            LoadFileDialog d = new LoadFileDialog(LoadFileDialog.filterForType(DialogFileType.Image));
+            if(!d.showDialog(getFrame())) {
                 return;
             }
             
-            nemesisLocation = filePath;
+            nemesisLocation = d.getSelectedPath();
             ImageIcon ii = new ImageIcon(nemesisLocation);
             Image image = getScaledImage(ii.getImage(), 113, 113);
             ii = new ImageIcon(image);

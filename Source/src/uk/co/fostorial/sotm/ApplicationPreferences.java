@@ -9,10 +9,6 @@ package uk.co.fostorial.sotm;
 import java.io.File;
 import java.util.prefs.Preferences;
 
-/**
- *
- * @author MCP
- */
 public class ApplicationPreferences {
     private static final Preferences prefs;
     

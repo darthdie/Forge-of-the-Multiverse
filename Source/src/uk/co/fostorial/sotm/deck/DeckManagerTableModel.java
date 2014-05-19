@@ -2,7 +2,6 @@ package uk.co.fostorial.sotm.deck;
 
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
-
 import uk.co.fostorial.sotm.structure.Deck;
 
 public class DeckManagerTableModel implements TableModel {

@@ -2,7 +2,6 @@ package uk.co.fostorial.sotm.deck;
 
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
-
 import uk.co.fostorial.sotm.structure.Deck;
 
 public class DeckStatisticsTableModel implements TableModel {
@@ -10,7 +9,7 @@ public class DeckStatisticsTableModel implements TableModel {
 	public final int STAT = 0;
 	public final int VALUE = 1;
 
-	private Deck deck;
+	private final Deck deck;
 	
 	public DeckStatisticsTableModel(Deck deck) {
 		this.deck = deck;
@@ -50,7 +49,7 @@ public class DeckStatisticsTableModel implements TableModel {
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		if (deck.getStats().size() == 0)
+		if (deck.getStats().isEmpty())
 		{
 			return "";
 		}

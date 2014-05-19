@@ -26,9 +26,6 @@ import org.jsoup.select.Elements;
  * @author MCP
  */
 public class DeckDocument {
-    private String path;
-    private File file;
-    private Document document;
 
     public static DeckDocument create(String path) {
         try {
@@ -43,7 +40,10 @@ public class DeckDocument {
             return null;
         }
     }
-    
+    private String path;    
+    private File file;
+    private Document document;
+
     public Deck parse() {
         List<Card> cards = new ArrayList<>();
 
@@ -485,4 +485,5 @@ public class DeckDocument {
             return null;
         }
     }
+    
 }

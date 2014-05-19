@@ -7,7 +7,6 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -17,8 +16,9 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-
 import uk.co.fostorial.sotm.CreatorFrame;
+import uk.co.fostorial.sotm.DialogFileType;
+import uk.co.fostorial.sotm.LoadFileDialog;
 import uk.co.fostorial.sotm.structure.EnvironmentCard;
 
 public class CreatorTabEnvironmentCard extends CreatorTab implements ActionListener {
@@ -370,24 +370,24 @@ public class CreatorTabEnvironmentCard extends CreatorTab implements ActionListe
             }
         }
         else if (e.getSource().equals(portraitButton)) {
-            String filePath = getFrame().browseForLoadPath(CreatorFrame.BrowserFileType.Image);
-            if(filePath.equals("")) {
+            LoadFileDialog d = new LoadFileDialog(LoadFileDialog.filterForType(DialogFileType.Image));
+            if(!d.showDialog(getFrame())) {
                 return;
             }
             
-            portraitPath = filePath;
+            portraitPath = d.getSelectedPath();
             ImageIcon ii = new ImageIcon(portraitPath);
             Image image = getScaledImage(ii.getImage(), 703 - 46, 608 - 122);
             ii = new ImageIcon(image);
             portrait.setIcon(ii);
         }
         else if (e.getSource().equals(hpImageButton)) {
-            String filePath = getFrame().browseForLoadPath(CreatorFrame.BrowserFileType.Image);
-            if(filePath.equals("")) {
+            LoadFileDialog d = new LoadFileDialog(LoadFileDialog.filterForType(DialogFileType.Image));
+            if(!d.showDialog(getFrame())) {
                 return;
             }
 
-            hpImagePath = filePath;
+            hpImagePath = d.getSelectedPath();
             ImageIcon ii = new ImageIcon(hpImagePath);
             Image image = getScaledImage(ii.getImage(), 135, 135);
             ii = new ImageIcon(image);

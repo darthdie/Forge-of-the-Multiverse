@@ -15,10 +15,10 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document.OutputSettings;
-import org.jsoup.safety.Whitelist;
 import uk.co.fostorial.sotm.CreatorFrame;
+import uk.co.fostorial.sotm.DialogFileType;
+import uk.co.fostorial.sotm.FolderBrowserDialog;
+import uk.co.fostorial.sotm.SaveFileDialog;
 import uk.co.fostorial.sotm.design.CreatorTab;
 import uk.co.fostorial.sotm.design.CreatorTabCardBack;
 import uk.co.fostorial.sotm.design.CreatorTabEnvironmentCard;
@@ -40,7 +40,7 @@ import uk.co.fostorial.sotm.structure.VillainCard;
 import uk.co.fostorial.sotm.structure.VillainDeck;
 import uk.co.fostorial.sotm.structure.VillainFrontCard;
 
-public final class DeckManager extends JSplitPane implements PropertyChangeListener, ListSelectionListener {
+public class DeckManager extends JSplitPane implements PropertyChangeListener, ListSelectionListener {
     private static final long serialVersionUID = 7972443091809248703L;
 
     public final static int VILLAIN_MODE = 0;
@@ -61,6 +61,20 @@ public final class DeckManager extends JSplitPane implements PropertyChangeListe
     private final CreatorFrame frame;
     private CreatorTab creator;
 
+    public DeckManager(int deckMode, Deck deck, CreatorFrame frame) {
+        this.setDeckMode(deckMode);
+        this.deck = deck;
+        this.frame = frame;
+        
+        if (deck == null) {
+            newDeck();
+        }
+        
+        this.deck.addPropertyChangeListener(this);
+        
+        setup();
+    }
+    
     public String getDeckDisplayName() {
         return deck.getDisplayName();
     }
@@ -99,20 +113,6 @@ public final class DeckManager extends JSplitPane implements PropertyChangeListe
 
     public void setDeckStatTable(JTable deckStatTable) {
         this.deckStatTable = deckStatTable;
-    }
-
-    public DeckManager(int deckMode, Deck deck, CreatorFrame frame) {
-        this.setDeckMode(deckMode);
-        this.deck = deck;
-        this.frame = frame;
-        
-        if (deck == null) {
-            newDeck();
-        }
-        
-        this.deck.addPropertyChangeListener(this);
-
-        setup();
     }
 
     private void setup() {
@@ -314,12 +314,12 @@ public final class DeckManager extends JSplitPane implements PropertyChangeListe
 
     public boolean saveDeck() {
         try {
-            String filePath = frame.browseForSavePath(CreatorFrame.BrowserFileType.Deck);
-            if (filePath.equals("")) {
+            SaveFileDialog d = new SaveFileDialog(SaveFileDialog.filterForType(DialogFileType.Deck));
+            if(!d.showDialog(frame)) {
                 return false;
             }
 
-            File f = new File(filePath);
+            File f = new File(d.getSelectedPath());
             try (FileWriter fstream = new FileWriter(f); BufferedWriter out = new BufferedWriter(fstream)) {
                 String xml = deck.getXML();
                 out.write(xml);
@@ -338,7 +338,6 @@ public final class DeckManager extends JSplitPane implements PropertyChangeListe
             
             return true;
         } catch (IOException e) {
-            e.printStackTrace();
             return false;
         }
     }
@@ -354,11 +353,11 @@ public final class DeckManager extends JSplitPane implements PropertyChangeListe
     private void exportDeckIndividually(String type) {
         CreatorTab creator = null;
 
-        String dirPath = frame.browseForSavePath(CreatorFrame.BrowserFileType.Directory);
-        if (dirPath.equals("")) {
+        FolderBrowserDialog d = new FolderBrowserDialog();
+        if(!d.showDialog(frame)) {
             return;
         }
-
+        
         for (Card c : deck.getCards()) {
             if (c != null) {
                 if (c instanceof HeroFrontCard) {
@@ -390,10 +389,10 @@ public final class DeckManager extends JSplitPane implements PropertyChangeListe
                 }
 
                 if (type.equals("png")) {
-                    creator.saveToPNG(dirPath);
+                    creator.saveToPNG(d.getSelectedPath());
                 }
                 else if (type.equals("jpg")) {
-                    creator.saveToJPG(dirPath);
+                    creator.saveToJPG(d.getSelectedPath());
                 }
             }
         }
@@ -410,8 +409,6 @@ public final class DeckManager extends JSplitPane implements PropertyChangeListe
                     break;
                 }
             }
-            
-            //frame.getTabbedPane().setTitleAt(index, (String)e.getNewValue());
         }
     }
 }

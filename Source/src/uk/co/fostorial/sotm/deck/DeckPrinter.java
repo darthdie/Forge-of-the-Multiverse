@@ -132,7 +132,7 @@ public class DeckPrinter {
             x += cardWidth + 20;
             System.gc();
 
-            if (x >= (int) ((3 * cardWidth) + (4 * 20))) {
+            if (x >= ((3 * cardWidth) + (4 * 20))) {
                 x = 20;
                 y += cardHeight + 20;
             }
@@ -153,7 +153,6 @@ public class DeckPrinter {
 
                     g.fillRect(0, 0, outputImage.getWidth(), outputImage.getHeight());
                 } catch (IOException e) {
-                    e.printStackTrace();
                 }
             }
 
@@ -191,7 +190,7 @@ public class DeckPrinter {
 
             System.gc();
 
-            if (x >= (int) ((3 * cardWidth) + (4 * 20))) {
+            if (x >= ((3 * cardWidth) + (4 * 20))) {
                 x = 20;
                 y += cardHeight + 20;
             }
@@ -212,7 +211,6 @@ public class DeckPrinter {
 
                     g.fillRect(0, 0, outputImage.getWidth(), outputImage.getHeight());
                 } catch (IOException e) {
-                    e.printStackTrace();
                 }
             }
 
@@ -299,7 +297,7 @@ public class DeckPrinter {
             x += cardWidth + 20;
             System.gc();
 
-            if (x >= (int) ((3 * cardWidth) + (4 * 20))) {
+            if (x >= ((3 * cardWidth) + (4 * 20))) {
                 x = 20;
                 y += cardHeight + 20;
             }
@@ -320,7 +318,6 @@ public class DeckPrinter {
 
                     g.fillRect(0, 0, outputImage.getWidth(), outputImage.getHeight());
                 } catch (IOException e) {
-                    e.printStackTrace();
                 }
             }
 
@@ -368,7 +365,7 @@ public class DeckPrinter {
 
             System.gc();
 
-            if (x >= (int) ((3 * cardWidth) + (4 * 20))) {
+            if (x >= ((3 * cardWidth) + (4 * 20))) {
                 x = 20;
                 y += cardHeight + 20;
             }
@@ -389,7 +386,6 @@ public class DeckPrinter {
 
                     g.fillRect(0, 0, outputImage.getWidth(), outputImage.getHeight());
                 } catch (IOException e) {
-                    e.printStackTrace();
                 }
             }
 
@@ -480,7 +476,7 @@ public class DeckPrinter {
             x += cardWidth + 20;
             System.gc();
 
-            if (x >= (int) ((3 * cardWidth) + (4 * 20))) {
+            if (x >= ((3 * cardWidth) + (4 * 20))) {
                 x = 20;
                 y += cardHeight + 20;
             }
@@ -501,7 +497,6 @@ public class DeckPrinter {
 
                     g.fillRect(0, 0, outputImage.getWidth(), outputImage.getHeight());
                 } catch (IOException e) {
-                    e.printStackTrace();
                 }
             }
 
@@ -550,7 +545,7 @@ public class DeckPrinter {
 
             System.gc();
 
-            if (x >= (int) ((3 * cardWidth) + (4 * 20))) {
+            if (x >= ((3 * cardWidth) + (4 * 20))) {
                 x = 20;
                 y += cardHeight + 20;
             }
@@ -571,7 +566,6 @@ public class DeckPrinter {
 
                     g.fillRect(0, 0, outputImage.getWidth(), outputImage.getHeight());
                 } catch (IOException e) {
-                    e.printStackTrace();
                 }
             }
 
@@ -582,7 +576,7 @@ public class DeckPrinter {
     public boolean exportToText(String filePath) {
         try {
             if(!filePath.toLowerCase().endsWith(".txt")) {
-                filePath = filePath + ".txt";
+                filePath += ".txt";
             }
             
             FileWriter fstream = new FileWriter(new File(filePath));
@@ -602,7 +596,6 @@ public class DeckPrinter {
             
             return true;
         } catch (IOException e) {
-            e.printStackTrace();
             return false;
         }
     }

@@ -18,10 +18,11 @@ import javax.swing.JTextArea;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import uk.co.fostorial.sotm.CreatorFrame;
+import uk.co.fostorial.sotm.DialogFileType;
+import uk.co.fostorial.sotm.SaveFileDialog;
 import uk.co.fostorial.sotm.structure.Card;
 
 public class CreatorTab extends JSplitPane {
-
     private static final long serialVersionUID = 6696291198937796985L;
 
     private JScrollPane imagePaneScroll;
@@ -65,43 +66,35 @@ public class CreatorTab extends JSplitPane {
 
     public void saveToJPG() {
         try {
-            String filePath = getFrame().browseForSavePath(CreatorFrame.BrowserFileType.JPG);
-            if(filePath.equals("")) {
+            SaveFileDialog d = new SaveFileDialog(SaveFileDialog.filterForType(DialogFileType.JPG));
+            if(!d.showDialog(frame)) {
                 return;
             }
 
-            int w = imageWidth;
-            int h = imageHeight;
-            int type = BufferedImage.TYPE_INT_RGB;
-            BufferedImage image = new BufferedImage(w, h, type);
+            BufferedImage image = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_RGB);
             Graphics2D g2 = image.createGraphics();
             imagePane.paint(g2);
             g2.dispose();
 
-            ImageIO.write(image, "jpg", new File(filePath));
+            ImageIO.write(image, "jpg", new File(d.getSelectedPath()));
         } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
     public void saveToPNG() {
         try {
-            String filePath = getFrame().browseForSavePath(CreatorFrame.BrowserFileType.PNG);
-            if(filePath.equals("")) {
+            SaveFileDialog d = new SaveFileDialog(SaveFileDialog.filterForType(DialogFileType.PNG));
+            if(!d.showDialog(frame)) {
                 return;
             }
 
-            int w = imageWidth;
-            int h = imageHeight;
-            int type = BufferedImage.TYPE_INT_RGB;
-            BufferedImage image = new BufferedImage(w, h, type);
+            BufferedImage image = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_RGB);
             Graphics2D g2 = image.createGraphics();
             imagePane.paint(g2);
             g2.dispose();
 
-            ImageIO.write(image, "png", new File(filePath));
+            ImageIO.write(image, "png", new File(d.getSelectedPath()));
         } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
@@ -112,7 +105,6 @@ public class CreatorTab extends JSplitPane {
             File outputfile = f;
             ImageIO.write(getImage(), "png", outputfile);
         } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
@@ -123,7 +115,6 @@ public class CreatorTab extends JSplitPane {
             File outputfile = f;
             ImageIO.write(getImage(), "jpg", outputfile);
         } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
@@ -183,122 +174,6 @@ public class CreatorTab extends JSplitPane {
         this.imageHeight = imageHeight;
     }
 
-    public class PropertiesDocumentListener implements DocumentListener {
-
-        private JLabel label;
-
-        public PropertiesDocumentListener(JLabel label) {
-            this.label = label;
-        }
-
-        @Override
-        public void changedUpdate(DocumentEvent e) {
-            try {
-                label.setText(e.getDocument().getText(0, e.getDocument().getLength()));
-            } catch (Exception ex) {
-                label.setText("ERROR!");
-            }
-        }
-
-        @Override
-        public void insertUpdate(DocumentEvent e) {
-            try {
-                label.setText(e.getDocument().getText(0, e.getDocument().getLength()));
-            } catch (Exception ex) {
-                label.setText("ERROR!");
-            }
-        }
-
-        @Override
-        public void removeUpdate(DocumentEvent e) {
-            try {
-                label.setText(e.getDocument().getText(0, e.getDocument().getLength()));
-            } catch (Exception ex) {
-                label.setText("ERROR!");
-            }
-        }
-
-    }
-
-    public class MultilinePropertiesDocumentListener implements DocumentListener {
-        private final JLabel label;
-
-        public MultilinePropertiesDocumentListener(JLabel label) {
-            this.label = label;
-        }
-
-        @Override
-        public void changedUpdate(DocumentEvent e) {
-            try {
-                String txt = e.getDocument().getText(0, e.getDocument().getLength());
-                txt = txt.replace("\n", "<br>");
-                label.setText("<html>" + txt + "</html>");
-            } catch (Exception ex) {
-                label.setText("ERROR!");
-            }
-        }
-
-        @Override
-        public void insertUpdate(DocumentEvent e) {
-            try {
-                String newline = System.getProperty("line.separator");
-                String txt = e.getDocument().getText(0, e.getDocument().getLength());
-                //String txt = e.getDocument().getProperty(key);
-                txt = txt.replace(newline, "|");
-                label.setText("<html>" + txt + "</html>");
-            } catch (Exception ex) {
-                label.setText("ERROR!");
-            }
-        }
-
-        @Override
-        public void removeUpdate(DocumentEvent e) {
-            try {
-                String txt = e.getDocument().getText(0, e.getDocument().getLength());
-                txt = txt.replace("\n", "<br>");
-                label.setText("<html>" + txt + "</html>");
-                //label.setText(e.getDocument().getText(0, e.getDocument().getLength()));
-            } catch (Exception ex) {
-                label.setText("ERROR!");
-            }
-        }
-
-    }
-
-    public class TextareaPropertiesDocumentListener implements DocumentListener {
-        private final JTextArea label;
-
-        public TextareaPropertiesDocumentListener(JTextArea label) {
-            this.label = label;
-        }
-
-        @Override
-        public void changedUpdate(DocumentEvent e) {
-            try {
-                label.setDocument(e.getDocument());
-            } catch (Exception ex) {
-                label.setText("ERROR!");
-            }
-        }
-
-        @Override
-        public void insertUpdate(DocumentEvent e) {
-            try {
-                label.setDocument(e.getDocument());
-            } catch (Exception ex) {
-                label.setText("ERROR!");
-            }
-        }
-
-        @Override
-        public void removeUpdate(DocumentEvent e) {
-            try {
-                label.setDocument(e.getDocument());
-            } catch (Exception ex) {
-                label.setText("ERROR!");
-            }
-        }
-    }
 
     public Image getScaledImage(Image srcImg, int w, int h) {
         BufferedImage resizedImg = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
@@ -384,5 +259,122 @@ public class CreatorTab extends JSplitPane {
         frame = null;
 
         System.gc();
+    }
+
+    public class PropertiesDocumentListener implements DocumentListener {
+
+        private final JLabel label;
+
+        public PropertiesDocumentListener(JLabel label) {
+            this.label = label;
+        }
+
+        @Override
+        public void changedUpdate(DocumentEvent e) {
+            try {
+                label.setText(e.getDocument().getText(0, e.getDocument().getLength()));
+            } catch (Exception ex) {
+                label.setText("ERROR!");
+            }
+        }
+
+        @Override
+        public void insertUpdate(DocumentEvent e) {
+            try {
+                label.setText(e.getDocument().getText(0, e.getDocument().getLength()));
+            } catch (Exception ex) {
+                label.setText("ERROR!");
+            }
+        }
+
+        @Override
+        public void removeUpdate(DocumentEvent e) {
+            try {
+                label.setText(e.getDocument().getText(0, e.getDocument().getLength()));
+            } catch (Exception ex) {
+                label.setText("ERROR!");
+            }
+        }
+    }
+
+    public class MultilinePropertiesDocumentListener implements DocumentListener {
+
+        private final JLabel label;
+
+        public MultilinePropertiesDocumentListener(JLabel label) {
+            this.label = label;
+        }
+
+        @Override
+        public void changedUpdate(DocumentEvent e) {
+            try {
+                String txt = e.getDocument().getText(0, e.getDocument().getLength());
+                txt = txt.replace("\n", "<br>");
+                label.setText("<html>" + txt + "</html>");
+            } catch (Exception ex) {
+                label.setText("ERROR!");
+            }
+        }
+
+        @Override
+        public void insertUpdate(DocumentEvent e) {
+            try {
+                String newline = System.getProperty("line.separator");
+                String txt = e.getDocument().getText(0, e.getDocument().getLength());
+                //String txt = e.getDocument().getProperty(key);
+                txt = txt.replace(newline, "|");
+                label.setText("<html>" + txt + "</html>");
+            } catch (Exception ex) {
+                label.setText("ERROR!");
+            }
+        }
+
+        @Override
+        public void removeUpdate(DocumentEvent e) {
+            try {
+                String txt = e.getDocument().getText(0, e.getDocument().getLength());
+                txt = txt.replace("\n", "<br>");
+                label.setText("<html>" + txt + "</html>");
+                //label.setText(e.getDocument().getText(0, e.getDocument().getLength()));
+            } catch (Exception ex) {
+                label.setText("ERROR!");
+            }
+        }
+    }
+
+    public class TextareaPropertiesDocumentListener implements DocumentListener {
+
+        private final JTextArea label;
+
+        public TextareaPropertiesDocumentListener(JTextArea label) {
+            this.label = label;
+        }
+
+        @Override
+        public void changedUpdate(DocumentEvent e) {
+            try {
+                label.setDocument(e.getDocument());
+            } catch (Exception ex) {
+                label.setText("ERROR!");
+            }
+        }
+
+        @Override
+        public void insertUpdate(DocumentEvent e) {
+            try {
+                label.setDocument(e.getDocument());
+            } catch (Exception ex) {
+                label.setText("ERROR!");
+            }
+        }
+
+        @Override
+        public void removeUpdate(DocumentEvent e) {
+            try {
+                label.setDocument(e.getDocument());
+            } catch (Exception ex) {
+                label.setText("ERROR!");
+            }
+        }
     }
 }

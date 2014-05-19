@@ -4,12 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.Window;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.event.WindowListener;
-import java.io.File;
 import java.lang.reflect.Method;
-import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -17,8 +13,6 @@ import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.filechooser.FileFilter;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import say.swing.JFontChooser;
 import uk.co.fostorial.sotm.deck.DeckManager;
 import uk.co.fostorial.sotm.design.CreatorTab;
@@ -55,6 +49,19 @@ public class CreatorFrame extends JFrame implements ChangeListener, WindowListen
     final static public int FILE_NEW_VILLAIN_DECK = 9;
     final static public int FILE_NEW_ENVIRONMENT_DECK = 10;
     final static public int FILE_NEW_ENVIRONMENT_CARD = 11;
+
+    @SuppressWarnings(value = {"unchecked", "rawtypes"})
+    public static void enableOSXFullscreen(Window window) {
+        if (window != null) {
+            try {
+                Class util = Class.forName("com.apple.eawt.FullScreenUtilities");
+                Class params[] = new Class[]{Window.class, Boolean.TYPE};
+                Method method = util.getMethod("setWindowCanFullScreen", params);
+                method.invoke(util, window, true);
+            } catch (Exception e) {
+            }
+        }
+    }
 
     private CreatorMenuBar creatorMenuBar;
 
@@ -142,12 +149,12 @@ public class CreatorFrame extends JFrame implements ChangeListener, WindowListen
             }
             break;
             case FILE_OPEN_HERO_DECK:
-                String path = browseForLoadPath(BrowserFileType.Deck);
-                if (path.equals("")) {
-                    break;
+                LoadFileDialog d = new LoadFileDialog(LoadFileDialog.filterForType(DialogFileType.Deck));
+                if (!d.showDialog(this)) {
+                    return;
                 }
 
-                Deck deck = DeckDocument.create(path).parse();
+                Deck deck = DeckDocument.create(d.getSelectedPath()).parse();
                 if (deck == null) {
                     break;
                 }
@@ -182,19 +189,6 @@ public class CreatorFrame extends JFrame implements ChangeListener, WindowListen
         if (tabbedPane.getComponentCount() > 0) {
             CreatorTab creatorTab = (CreatorTab) tabbedPane.getSelectedComponent();
             creatorTab.saveToPNG();
-        }
-    }
-
-    @SuppressWarnings({"unchecked", "rawtypes"})
-    public static void enableOSXFullscreen(Window window) {
-        if (window != null) {
-            try {
-                Class util = Class.forName("com.apple.eawt.FullScreenUtilities");
-                Class params[] = new Class[]{Window.class, Boolean.TYPE};
-                Method method = util.getMethod("setWindowCanFullScreen", params);
-                method.invoke(util, window, true);
-            } catch (Exception e) {
-            }
         }
     }
 
@@ -234,134 +228,6 @@ public class CreatorFrame extends JFrame implements ChangeListener, WindowListen
         }
 
         return null;
-    }
-
-    public String browseForSavePath(BrowserFileType type) {
-        FileNameExtensionFilter filter = null;
-        switch (type) {
-            case Image:
-                filter = new FileNameExtensionFilter("Image files", ImageIO.getReaderFileSuffixes());
-                break;
-            case Text:
-                filter = new FileNameExtensionFilter("Text Files (*.txt)", "txt");
-                break;
-            case Deck:
-            case XML:
-                filter = new FileNameExtensionFilter("XML Files (*.xml)", "xml");
-                break;
-            case JPG:
-                filter = new FileNameExtensionFilter("JPG Files (*.jpg)", "jpg");
-                break;
-            case PNG:
-                filter = new FileNameExtensionFilter("PNG Files (*.png)", "png");
-                break;
-        }
-
-        if (filter != null) {
-            chooser.addChoosableFileFilter(filter);
-            chooser.setFileFilter(filter);
-        }
-
-        if (type == BrowserFileType.Directory) {
-            chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-            chooser.validate();
-        } else {
-            chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-            chooser.validate();
-        }
-
-        String path = "";
-        if (chooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
-            path = chooser.getSelectedFile().getAbsolutePath();
-
-            switch (type) {
-                case JPG:
-                    if (path.toLowerCase().endsWith(".jpg") == false
-                            || path.toLowerCase().endsWith(".jpeg") == false) {
-                        path = path + ".jpg";
-                    }
-                    break;
-                case PNG:
-                    if (path.toLowerCase().endsWith(".png") == false) {
-                        path = path + ".png";
-                    }
-                    break;
-                case Text:
-                    if (path.toLowerCase().endsWith(".txt") == false) {
-                        path = path + ".txt";
-                    }
-                    break;
-                case Deck:
-                case XML:
-                    if (path.toLowerCase().endsWith(".xml") == false) {
-                        path = path + ".xml";
-                    }
-                    break;
-            }
-        }
-
-        if (filter != null) {
-            chooser.removeChoosableFileFilter(filter);
-        }
-
-        return path;
-    }
-
-    public String browseForLoadPath(BrowserFileType type) {
-        FileNameExtensionFilter filter = null;
-        switch (type) {
-            case Image:
-                filter = new FileNameExtensionFilter("Image files", ImageIO.getReaderFileSuffixes());
-                break;
-            case Text:
-                filter = new FileNameExtensionFilter("Text Files (*.txt)", "txt");
-                break;
-            case Deck:
-            case XML:
-                filter = new FileNameExtensionFilter("XML Files (*.xml)", "xml");
-                break;
-            case JPG:
-                filter = new FileNameExtensionFilter("JPG Files (*.jpg)", "jpg");
-                break;
-            case PNG:
-                filter = new FileNameExtensionFilter("PNG Files (*.png)", "png");
-                break;
-        }
-
-        if (filter != null) {
-            chooser.addChoosableFileFilter(filter);
-            chooser.setFileFilter(filter);
-        }
-
-        if (type == BrowserFileType.Directory) {
-            chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-            chooser.validate();
-        } else {
-            chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-            chooser.validate();
-        }
-
-        String path = "";
-        if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-            path = chooser.getSelectedFile().getAbsolutePath();
-        }
-
-        if (filter != null) {
-            chooser.removeChoosableFileFilter(filter);
-        }
-
-        return path;
-    }
-
-    public enum BrowserFileType {
-
-        Image,
-        Deck,
-        Text,
-        Directory,
-        XML,
-        JPG,
-        PNG
     }
 
     @Override
@@ -439,4 +305,5 @@ public class CreatorFrame extends JFrame implements ChangeListener, WindowListen
     @Override
     public void windowDeactivated(java.awt.event.WindowEvent e) {
     }
+
 }

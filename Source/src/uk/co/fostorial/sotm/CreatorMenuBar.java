@@ -4,7 +4,6 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -15,7 +14,7 @@ import uk.co.fostorial.sotm.deck.DeckManager;
 import uk.co.fostorial.sotm.deck.DeckPrinter;
 import uk.co.fostorial.sotm.structure.Deck;
 
-public class CreatorMenuBar extends JMenuBar implements ActionListener {
+public final class CreatorMenuBar extends JMenuBar implements ActionListener {
 
     private static final long serialVersionUID = -1809228320182460442L;
 
@@ -375,12 +374,12 @@ public class CreatorMenuBar extends JMenuBar implements ActionListener {
             if (frame.getTabbedPane().getSelectedComponent() instanceof DeckManager) {
                 DeckManager manager = (DeckManager) frame.getTabbedPane().getSelectedComponent();
                 
-                String filePath = frame.browseForSavePath(CreatorFrame.BrowserFileType.Text);
-                if(filePath.equals("")) {
+                SaveFileDialog d = new SaveFileDialog(SaveFileDialog.filterForType(DialogFileType.Text));
+                if(!d.showDialog(frame)) {
                     return;
                 }
 
-                if(new DeckPrinter(frame, manager.getDeck()).exportToText(filePath)) {
+                if(new DeckPrinter(frame, manager.getDeck()).exportToText(d.getSelectedPath())) {
                     JOptionPane.showMessageDialog(frame, "Export Complete!");
                 }
             }
@@ -391,7 +390,8 @@ public class CreatorMenuBar extends JMenuBar implements ActionListener {
     }
     
     private String getExportPath() {
-        return frame.browseForSavePath(CreatorFrame.BrowserFileType.Directory);
+        FolderBrowserDialog dlg = new FolderBrowserDialog();
+        return dlg.showDialog(frame) ? dlg.getSelectedPath() : "";
     }
 
     public CreatorFrame getFrame() {

@@ -12,6 +12,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 
 import uk.co.fostorial.sotm.CreatorFrame;
+import uk.co.fostorial.sotm.LoadFileDialog;
 import uk.co.fostorial.sotm.structure.BackCard;
 
 public class CreatorTabCardBack extends CreatorTab implements ActionListener {
@@ -27,7 +28,7 @@ public class CreatorTabCardBack extends CreatorTab implements ActionListener {
     private JButton saveButton;
     private JButton cancelButton;
 
-    private BackCard backCard;
+    private final BackCard backCard;
 
     public CreatorTabCardBack(CreatorFrame frame, BackCard c) {
         super(frame);
@@ -92,12 +93,12 @@ public class CreatorTabCardBack extends CreatorTab implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource().equals(portraitButton)) {
-            String filePath = getFrame().browseForLoadPath(CreatorFrame.BrowserFileType.Image);
-            if(filePath.equals("")) {
+            LoadFileDialog d = new LoadFileDialog(LoadFileDialog.filterForType(DialogFileType.Image));
+            if(!d.showDialog(getFrame())) {
                 return;
             }
 
-            portraitLocation = filePath;
+            portraitLocation = d.getSelectedPath();
             ImageIcon ii = new ImageIcon(portraitLocation);
             Image image = getScaledImage(ii.getImage(), (int) getImagePane().getPreferredSize().getWidth(), (int) getImagePane().getPreferredSize().getHeight());
             ii = new ImageIcon(image);

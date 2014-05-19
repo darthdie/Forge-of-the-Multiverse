@@ -1,7 +1,6 @@
 package uk.co.fostorial.sotm;
 
 import java.awt.Font;
-
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -11,7 +10,6 @@ public class Driver {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
-            // handle exception
         }
 
         UIManager.put("Button.font", new Font("Comic Book", Font.PLAIN, 14));
