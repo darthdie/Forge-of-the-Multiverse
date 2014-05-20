@@ -142,6 +142,7 @@ public class DeckManager extends JSplitPane implements PropertyChangeListener, L
         cardTableScroll.setAutoscrolls(true);
         cardTable = new JTable(new DeckManagerTableModel(deck));
         cardTable.setAutoCreateRowSorter(true);
+        cardTable.getRowSorter().toggleSortOrder(0);
         cardTable.setFillsViewportHeight(true);
         cardTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         cardTable.getSelectionModel().addListSelectionListener(this);

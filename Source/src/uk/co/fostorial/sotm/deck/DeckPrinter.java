@@ -47,34 +47,20 @@ public class DeckPrinter {
         this.deck = deck;
     }
 
-    public void exportDeckPagesPNG(String folder) {
+    public void exportDeckPagesToImage(DeckImageExportOptions options) {
         switch (deck.getType()) {
             case Hero:
-                exportHeroPages("png", folder);
+                exportHeroPages(options.Extension, options.ExportDirectory);
                 break;
             case Villain:
-                exportVillainPages("png", folder);
+                exportVillainPages(options.Extension, options.ExportDirectory);
                 break;
             case Environment:
-                exportEnvironmentPages("png", folder);
+                exportEnvironmentPages(options.Extension, options.ExportDirectory);
                 break;
         }
     }
-
-    public void exportDeckPagesJPG(String folder) {
-        switch (deck.getType()) {
-            case Hero:
-                exportHeroPages("jpg", folder);
-                break;
-            case Villain:
-                exportVillainPages("jpg", folder);
-                break;
-            case Environment:
-                exportEnvironmentPages("jpg", folder);
-                break;
-        }
-    }
-
+    
     private void exportEnvironmentPages(String extension, String folder) {
         BackCard cardBack = null;
         List<Card> cards = new ArrayList<>();

@@ -266,7 +266,8 @@ public class DeckDocument {
             card.setIssueString(findElement(el, "issuestring"));
             card.setNameColor(new Color(new Integer(findElement(el, "namecolour"))));
             card.setClassColor(new Color(new Integer(findElement(el, "classcolour"))));
-            card.setCardText(findElement(el, "cardtext"));
+            String s = findElement(el, "cardtext");
+            card.setCardText(s);
 
             if (findElement(el, "namefontcolor").isEmpty() == false) {
                 card.setNameFontColor(new Color(new Integer(findElement(el, "namefontcolor"))));
@@ -464,7 +465,9 @@ public class DeckDocument {
                 val = sel.text();
             } 
             else {
-                val = nodes.get(0).getWholeText();
+                for(TextNode node : nodes) {
+                    val += node.getWholeText();
+                }
             }
         }
         
@@ -485,5 +488,4 @@ public class DeckDocument {
             return null;
         }
     }
-    
 }
