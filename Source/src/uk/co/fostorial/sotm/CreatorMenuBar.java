@@ -346,7 +346,10 @@ public final class CreatorMenuBar extends JMenuBar implements ActionListener {
                 }
             }
         } else if (e.getSource().equals(version)) {
-            JOptionPane.showMessageDialog(frame, GlobalVariables.VERSION, "Version Number", JOptionPane.INFORMATION_MESSAGE);
+            String infoString = "Version: " + GlobalVariables.VERSION + "\n\n";
+            infoString += "Credits:\n";
+            infoString += "FamFamFam Silk Icons (http://www.famfamfam.com/lab/icons/silk/)";
+            JOptionPane.showMessageDialog(frame, infoString, "Information", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 

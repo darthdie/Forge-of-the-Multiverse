@@ -15,10 +15,6 @@ import javax.swing.JFrame;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-/**
- *
- * @author MCP
- */
 public class LoadFileDialog {
 
     public static Map<String, String[]> filterForType(DialogFileType type) {
@@ -86,8 +82,13 @@ public class LoadFileDialog {
     }
 
     private void removeAllFilters() {
-        for (FileFilter filter : chooser.getChoosableFileFilters()) {
-            chooser.removeChoosableFileFilter(filter);
+        FileFilter[] filters = chooser.getChoosableFileFilters();
+        if(filters.length <= 1) {
+            return;
+        }
+        
+        for(int i = 1; i < filters.length; i++) {
+            chooser.removeChoosableFileFilter(filters[i]);
         }
     }
 
@@ -106,8 +107,8 @@ public class LoadFileDialog {
 
         FileFilter[] filters = chooser.getChoosableFileFilters();
 
-        if (filters.length > 0) {
-            chooser.setFileFilter(chooser.getChoosableFileFilters()[0]);
+        if (filters.length > 1) {
+            chooser.setFileFilter(chooser.getChoosableFileFilters()[1]);
         }
 
         if (chooser.showOpenDialog(parent) != JFileChooser.APPROVE_OPTION) {
