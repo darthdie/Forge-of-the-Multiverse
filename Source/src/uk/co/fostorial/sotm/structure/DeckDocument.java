@@ -26,7 +26,6 @@ import org.jsoup.select.Elements;
  * @author MCP
  */
 public class DeckDocument {
-
     public static DeckDocument create(String path) {
         try {
             DeckDocument doc = new DeckDocument();
@@ -40,6 +39,7 @@ public class DeckDocument {
             return null;
         }
     }
+    
     private String path;    
     private File file;
     private Document document;
@@ -57,16 +57,16 @@ public class DeckDocument {
                 cards.addAll(parseHeroBackCards());
                 cards.addAll(parseHeroCards());
                 
-                return new HeroDeck(cards, name);
+                return new HeroDeck(cards, name, file.getAbsolutePath());
             case "villaindeck":
                 cards.addAll(parseVillainFrontCards());
                 cards.addAll(parseVillainCards());
                 
-                return new VillainDeck(cards, name);
+                return new VillainDeck(cards, name, file.getAbsolutePath());
             case "environmentdeck":
                 cards.addAll(parseEnvironmentCards());
                 
-                return new EnvironmentDeck(cards, name);
+                return new EnvironmentDeck(cards, name, file.getAbsolutePath());
         }
 
         return null;

@@ -10,6 +10,7 @@ import java.util.Objects;
 
 public class Deck implements PropertyChangeListener {
     private String name;
+    private String path;
     private List<Card> cards = new ArrayList<>();
 
     private int nextID = 0;
@@ -18,13 +19,26 @@ public class Deck implements PropertyChangeListener {
     private final PropertyChangeSupport changes;
 
     public Deck(DeckType deckType, String name) {
+        this(deckType, name, "");
+    }
+    
+    public Deck(DeckType deckType, String name, String path) {
         this.changes = new PropertyChangeSupport(this);
         this.type = deckType;
         this.name = name;
+        this.path = path;
     }
 
     public List<Card> getCards() {
         return cards;
+    }
+    
+    public String getPath() {
+        return path;
+    }
+    
+    public void setPath(String value) {
+        path = value;
     }
 
     public void setCards(List<Card> cards) {

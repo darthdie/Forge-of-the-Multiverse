@@ -315,6 +315,31 @@ public class DeckManager extends JSplitPane implements PropertyChangeListener, L
 
     public boolean saveDeck() {
         try {
+            if(deck.getPath().equals("")) {
+                return saveDeckAs();
+            }
+
+            File f = new File(deck.getPath());
+            try (FileWriter fstream = new FileWriter(f); BufferedWriter out = new BufferedWriter(fstream)) {
+                String xml = deck.getXML();
+                out.write(xml);
+            }
+            
+            String name = f.getName().replace(".xml", "");
+            setTabTitle(deck.getName(), name);
+            
+            deck.setName(name);
+            
+            deck.setIsDirty(false);
+            
+            return true;
+        } catch (IOException e) {
+            return false;
+        }
+    }
+
+    public boolean saveDeckAs() {
+        try {
             SaveFileDialog d = new SaveFileDialog(SaveFileDialog.filterForType(DialogFileType.Deck));
             if(!d.showDialog(frame)) {
                 return false;
@@ -327,13 +352,10 @@ public class DeckManager extends JSplitPane implements PropertyChangeListener, L
             }
             
             String name = f.getName().replace(".xml", "");
-            for(int i = 0; i < frame.getTabbedPane().getTabCount(); i++) {
-                if(frame.getTabbedPane().getTitleAt(i).equals(deck.getName())) {
-                    frame.getTabbedPane().setTitleAt(i, name);
-                }
-            }
+            setTabTitle(deck.getName(), name);
             
             deck.setName(name);
+            deck.setPath(f.getAbsolutePath());
             
             deck.setIsDirty(false);
             
@@ -342,7 +364,15 @@ public class DeckManager extends JSplitPane implements PropertyChangeListener, L
             return false;
         }
     }
-
+    
+    private void setTabTitle(String currentName, String newName) {
+        for(int i = 0; i < frame.getTabbedPane().getTabCount(); i++) {
+            if(frame.getTabbedPane().getTitleAt(i).equals(currentName)) {
+                frame.getTabbedPane().setTitleAt(i, newName);
+            }
+        }
+    }
+    
     public void exportDeckIndividuallyPNG() {
         exportDeckIndividually("png");
     }

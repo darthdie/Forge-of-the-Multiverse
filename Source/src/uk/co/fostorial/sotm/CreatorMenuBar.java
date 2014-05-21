@@ -3,6 +3,7 @@ package uk.co.fostorial.sotm;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import javax.swing.ImageIcon;
 import javax.swing.JMenu;
@@ -27,6 +28,7 @@ public final class CreatorMenuBar extends JMenuBar implements ActionListener {
     private JMenuItem fileNewVillainDeck;
     private JMenuItem fileNewEnvironmentDeck;
     private JMenuItem fileOpenDeck;
+    private JMenuItem fileSaveDeck;
     private JMenuItem fileSaveDeckAs;
     private JMenuItem fileCloseCurrentTab;
     private JMenuItem fileExit;
@@ -97,10 +99,16 @@ public final class CreatorMenuBar extends JMenuBar implements ActionListener {
         fileOpenDeck.setAccelerator(key);
         file.add(fileOpenDeck);
 
-        fileSaveDeckAs = new JMenuItem("Save Deck As...", new ImageIcon("Images/Icons/disk.png"));
+        fileSaveDeck = new JMenuItem("Save Deck", new ImageIcon("Images/Icons/disk.png"));
+        fileSaveDeck.addActionListener(this);
+        key = KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_MASK);
+        fileSaveDeck.setAccelerator(key);
+        file.add(fileSaveDeck);
+        
+        fileSaveDeckAs = new JMenuItem("Save Deck As...");
         fileSaveDeckAs.addActionListener(this);
         key = KeyStroke.getKeyStroke(
-                KeyEvent.VK_S, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask());
+                KeyEvent.VK_S, InputEvent.CTRL_MASK | InputEvent.SHIFT_MASK);
         fileSaveDeckAs.setAccelerator(key);
         file.add(fileSaveDeckAs);
 
@@ -252,10 +260,15 @@ public final class CreatorMenuBar extends JMenuBar implements ActionListener {
             frame.newWindow(CreatorFrame.FILE_NEW_ENVIRONMENT_DECK, null);
         } else if (e.getSource().equals(fileOpenDeck)) {
             frame.newWindow(CreatorFrame.FILE_OPEN_HERO_DECK, null);
-        } else if (e.getSource().equals(fileSaveDeckAs) || e.getSource().equals(frameSaveDeckAs)) {
+        } else if (e.getSource().equals(fileSaveDeck)) {
             if (frame.getTabbedPane().getSelectedComponent() instanceof DeckManager) {
                 DeckManager manager = (DeckManager) frame.getTabbedPane().getSelectedComponent();
                 manager.saveDeck();
+            }
+        } else if (e.getSource().equals(fileSaveDeckAs) || e.getSource().equals(frameSaveDeckAs)) {
+            if (frame.getTabbedPane().getSelectedComponent() instanceof DeckManager) {
+                DeckManager manager = (DeckManager) frame.getTabbedPane().getSelectedComponent();
+                manager.saveDeckAs();
             }
         } else if (e.getSource().equals(exportExportCurrentTabJPG)) {
             frame.exportToJPEG();
@@ -368,6 +381,9 @@ public final class CreatorMenuBar extends JMenuBar implements ActionListener {
         fileCloseCurrentTab.setVisible(true);
         fileCloseCurrentTab.setEnabled(true);
 
+        fileSaveDeck.setVisible(true);
+        fileSaveDeck.setEnabled(true);
+        
         fileSaveDeckAs.setVisible(true);
         fileSaveDeckAs.setEnabled(true);
 
@@ -400,6 +416,9 @@ public final class CreatorMenuBar extends JMenuBar implements ActionListener {
         fileCloseCurrentTab.setVisible(true);
         fileCloseCurrentTab.setEnabled(true);
 
+        fileSaveDeck.setVisible(false);
+        fileSaveDeck.setEnabled(false);
+        
         fileSaveDeckAs.setVisible(false);
         fileSaveDeckAs.setEnabled(false);
 
@@ -432,6 +451,9 @@ public final class CreatorMenuBar extends JMenuBar implements ActionListener {
         fileCloseCurrentTab.setVisible(false);
         fileCloseCurrentTab.setEnabled(false);
 
+        fileSaveDeck.setVisible(false);
+        fileSaveDeck.setEnabled(false);
+        
         fileSaveDeckAs.setVisible(false);
         fileSaveDeckAs.setEnabled(false);
 

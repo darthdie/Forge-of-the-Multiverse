@@ -4,7 +4,11 @@ import java.util.List;
 
 public class VillainDeck extends Deck {
     public VillainDeck(String name) {
-        super(DeckType.Villain, name);
+        this(name, "");
+    }
+    
+    public VillainDeck(String name, String path) {
+        super(DeckType.Villain, name, path);
 
         addCard(new VillainFrontCard("Villain Front", getNextIDInteger()));
         addCard(new VillainFrontCard("Villain Back", getNextIDInteger()));
@@ -12,7 +16,11 @@ public class VillainDeck extends Deck {
     }
 
     public VillainDeck(List<Card> cards, String name) {
-        super(DeckType.Villain, name);
+        this(cards, name, "");
+    }
+    
+    public VillainDeck(List<Card> cards, String name, String path) {
+        super(DeckType.Villain, name, path);
         setCards(cards);
     }
 }
